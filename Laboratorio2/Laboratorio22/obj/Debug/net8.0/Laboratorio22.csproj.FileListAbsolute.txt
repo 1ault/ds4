@@ -1,0 +1,15 @@
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/bin/Debug/net8.0/Laboratorio22
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/bin/Debug/net8.0/Laboratorio22.deps.json
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/bin/Debug/net8.0/Laboratorio22.runtimeconfig.json
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/bin/Debug/net8.0/Laboratorio22.dll
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/bin/Debug/net8.0/Laboratorio22.pdb
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.GeneratedMSBuildEditorConfig.editorconfig
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.AssemblyInfoInputs.cache
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.AssemblyInfo.cs
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.csproj.CoreCompileInputs.cache
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.sourcelink.json
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.dll
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/refint/Laboratorio22.dll
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.pdb
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/Laboratorio22.genruntimeconfig.cache
+/home/navide/code/tmp_ault_git/ds4/Laboratorio22/obj/Debug/net8.0/ref/Laboratorio22.dll

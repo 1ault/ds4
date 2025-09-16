@@ -1,0 +1,15 @@
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/bin/Debug/net8.0/Laboratorio32
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/bin/Debug/net8.0/Laboratorio32.deps.json
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/bin/Debug/net8.0/Laboratorio32.runtimeconfig.json
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/bin/Debug/net8.0/Laboratorio32.dll
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/bin/Debug/net8.0/Laboratorio32.pdb
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.GeneratedMSBuildEditorConfig.editorconfig
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.AssemblyInfoInputs.cache
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.AssemblyInfo.cs
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.csproj.CoreCompileInputs.cache
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.sourcelink.json
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.dll
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/refint/Laboratorio32.dll
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.pdb
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/Laboratorio32.genruntimeconfig.cache
+/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio32/obj/Debug/net8.0/ref/Laboratorio32.dll
