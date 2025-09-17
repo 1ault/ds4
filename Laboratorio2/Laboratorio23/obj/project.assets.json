@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/navide/code/tmp_ault_git/ds4/Laboratorio2/Laboratorio23/Laboratorio23.csproj",
+      "projectUniqueName": "/home/navide/code/ault_git/ds4/Laboratorio2/Laboratorio23/Laboratorio23.csproj",
       "projectName": "Laboratorio23",
-      "projectPath": "/home/navide/code/tmp_ault_git/ds4/Laboratorio2/Laboratorio23/Laboratorio23.csproj",
+      "projectPath": "/home/navide/code/ault_git/ds4/Laboratorio2/Laboratorio23/Laboratorio23.csproj",
       "packagesPath": "/home/navide/.nuget/packages/",
-      "outputPath": "/home/navide/code/tmp_ault_git/ds4/Laboratorio2/Laboratorio23/obj/",
+      "outputPath": "/home/navide/code/ault_git/ds4/Laboratorio2/Laboratorio23/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/navide/.nuget/NuGet/NuGet.Config"

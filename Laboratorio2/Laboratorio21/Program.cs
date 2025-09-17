@@ -17,6 +17,7 @@ client.Age = 15;
 Console.WriteLine(client.Id);
 Console.WriteLine(client.GetFullName());
 
+
 public class Client {
     public int Id { get; set; }
     public string FirstName { get; set; }
@@ -27,4 +28,3 @@ public class Client {
         return this.FirstName + " " + this.LastName;
     }
 }
-
