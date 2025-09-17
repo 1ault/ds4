@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "[Update] README.md: Add tree"
+	git commit -m "[Remove] zip"
 	git push -u origin Laboratorios
 
 purge:
