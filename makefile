@@ -6,3 +6,9 @@ git:
 purge:
 	find . -type d -name bin -o -name Debug | xargs rm -rf
 
+
+FOLDER_LAB := $(wildcard Laboratorio*/)
+zip_lab:
+	for dir in $(FOLDER_LAB); do \
+		zip -r "$$(dir%/).zip $$dir"; \
+	done
