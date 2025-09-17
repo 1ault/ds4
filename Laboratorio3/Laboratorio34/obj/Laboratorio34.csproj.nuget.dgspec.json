@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj": {}
+    "/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj": {}
   },
   "projects": {
-    "/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj": {
+    "/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj",
+        "projectUniqueName": "/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj",
         "projectName": "Laboratorio34",
-        "projectPath": "/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj",
+        "projectPath": "/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/Laboratorio34.csproj",
         "packagesPath": "/home/navide/.nuget/packages/",
-        "outputPath": "/home/navide/code/tmp_ault_git/ds4/Laboratorio3/Laboratorio34/obj/",
+        "outputPath": "/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/navide/.nuget/NuGet/NuGet.Config"

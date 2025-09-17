@@ -1,0 +1,15 @@
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/bin/Debug/net8.0/Laboratorio34
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/bin/Debug/net8.0/Laboratorio34.deps.json
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/bin/Debug/net8.0/Laboratorio34.runtimeconfig.json
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/bin/Debug/net8.0/Laboratorio34.dll
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/bin/Debug/net8.0/Laboratorio34.pdb
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.GeneratedMSBuildEditorConfig.editorconfig
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.AssemblyInfoInputs.cache
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.AssemblyInfo.cs
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.csproj.CoreCompileInputs.cache
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.sourcelink.json
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.dll
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/refint/Laboratorio34.dll
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.pdb
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/Laboratorio34.genruntimeconfig.cache
+/home/navide/code/ault_git/ds4/Laboratorio3/Laboratorio34/obj/Debug/net8.0/ref/Laboratorio34.dll

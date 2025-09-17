@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "[Update] lab2, lab3"
+	git commit -m "[Add] lab2, lab3, lab4"
 	git push -u origin Laboratorios
 
 run:
