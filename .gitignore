@@ -1,4 +1,4 @@
 **/.nvim/
-**/.Debug/
-**/.bin/
 **/.vs/
+**/Debug/
+**/bin/

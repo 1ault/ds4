@@ -3,6 +3,6 @@ git:
 	git commit -m "[Update]"
 	git push -u origin Laboratorios
 
-run:
-	cd Laboratorio_1 && dotnet run
+purge:
+	find . -type d -name bin -o -name Debug | xargs rm -rf
 
