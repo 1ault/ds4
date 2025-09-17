@@ -10,5 +10,5 @@ purge:
 FOLDER_LAB := $(wildcard Laboratorio*/)
 zip_lab:
 	for dir in $(FOLDER_LAB); do \
-		zip -r "$$(dir%/).zip $$dir"; \
+		zip -r "$${dir%/}.zip" "$$dir"; \
 	done
