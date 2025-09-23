@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "[Remove] zip"
+	git commit -m "[Update] lab5"
 	git push -u origin Laboratorios
 
 purge:
@@ -9,10 +9,10 @@ purge:
 
 
 FOLDER_LAB := $(wildcard Laboratorio*/)
-zip_lab:
+zip:
 	for dir in $(FOLDER_LAB); do \
 		zip -r "$${dir%/}.zip" "$$dir"; \
 	done
 
-zip_lab_move:
+zip_move:
 	mv ./*.zip ~/Documents/

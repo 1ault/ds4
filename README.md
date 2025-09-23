@@ -15,7 +15,7 @@ internal class Program {
     }
 }
 
-public class Class_Program {
+public class MyClass {
 
 }
 ```

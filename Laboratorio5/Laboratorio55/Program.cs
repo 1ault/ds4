@@ -14,7 +14,6 @@
             Console.WriteLine($"Nombre: {estudiante.Nombre}, Edad: {estudiante.Edad}");
         }
 
-
     }
 }
 
