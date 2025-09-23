@@ -14,6 +14,10 @@ internal class Program {
 
     }
 }
+
+public class Class_Program {
+
+}
 ```
 
 ## Tree
@@ -165,8 +169,63 @@ internal class Program {
 │       │   ├── project.assets.json
 │       │   └── project.nuget.cache
 │       └── Program.cs
+├── Laboratorio5
+│   ├── Laboratorio51
+│   │   ├── Laboratorio51.csproj
+│   │   ├── obj
+│   │   │   ├── Laboratorio51.csproj.nuget.dgspec.json
+│   │   │   ├── Laboratorio51.csproj.nuget.g.props
+│   │   │   ├── Laboratorio51.csproj.nuget.g.targets
+│   │   │   ├── project.assets.json
+│   │   │   └── project.nuget.cache
+│   │   └── Program.cs
+│   ├── Laboratorio52
+│   │   ├── Laboratorio52.csproj
+│   │   ├── obj
+│   │   │   ├── Laboratorio52.csproj.nuget.dgspec.json
+│   │   │   ├── Laboratorio52.csproj.nuget.g.props
+│   │   │   ├── Laboratorio52.csproj.nuget.g.targets
+│   │   │   ├── project.assets.json
+│   │   │   └── project.nuget.cache
+│   │   └── Program.cs
+│   ├── Laboratorio53
+│   │   ├── Laboratorio53.csproj
+│   │   ├── obj
+│   │   │   ├── Laboratorio53.csproj.nuget.dgspec.json
+│   │   │   ├── Laboratorio53.csproj.nuget.g.props
+│   │   │   ├── Laboratorio53.csproj.nuget.g.targets
+│   │   │   ├── project.assets.json
+│   │   │   └── project.nuget.cache
+│   │   └── Program.cs
+│   ├── Laboratorio54
+│   │   ├── Laboratorio54.csproj
+│   │   ├── obj
+│   │   │   ├── Laboratorio54.csproj.nuget.dgspec.json
+│   │   │   ├── Laboratorio54.csproj.nuget.g.props
+│   │   │   ├── Laboratorio54.csproj.nuget.g.targets
+│   │   │   ├── project.assets.json
+│   │   │   └── project.nuget.cache
+│   │   └── Program.cs
+│   ├── Laboratorio55
+│   │   ├── Laboratorio55.csproj
+│   │   ├── obj
+│   │   │   ├── Laboratorio55.csproj.nuget.dgspec.json
+│   │   │   ├── Laboratorio55.csproj.nuget.g.props
+│   │   │   ├── Laboratorio55.csproj.nuget.g.targets
+│   │   │   ├── project.assets.json
+│   │   │   └── project.nuget.cache
+│   │   └── Program.cs
+│   └── Laboratorio56
+│       ├── Laboratorio56.csproj
+│       ├── obj
+│       │   ├── Laboratorio56.csproj.nuget.dgspec.json
+│       │   ├── Laboratorio56.csproj.nuget.g.props
+│       │   ├── Laboratorio56.csproj.nuget.g.targets
+│       │   ├── project.assets.json
+│       │   └── project.nuget.cache
+│       └── Program.cs
 ├── makefile
 └── README.md
 
-36 directories, 112 files
+49 directories, 154 files
 ```

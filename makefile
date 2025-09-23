@@ -13,3 +13,6 @@ zip_lab:
 	for dir in $(FOLDER_LAB); do \
 		zip -r "$${dir%/}.zip" "$$dir"; \
 	done
+
+zip_lab_move:
+	mv ./*.zip ~/Documents/
