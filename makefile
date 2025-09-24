@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "[Update] lab5"
+	git commit -m "[Update] lab7"
 	git push -u origin Laboratorios
 
 purge:
@@ -15,4 +15,11 @@ zip:
 	done
 
 zip_move:
+	mv ./*.zip ~/Documents/
+
+
+zip_and_move:
+	for dir in $(FOLDER_LAB); do \
+		zip -r "$${dir%/}.zip" "$$dir"; \
+	done
 	mv ./*.zip ~/Documents/
