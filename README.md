@@ -9,6 +9,17 @@ dotnet new console -n [app_name]
 ## Template
 
 ```cs
+internal class Program 
+{
+    private static void Main(string[] args) 
+    {
+
+    }
+}
+```
+
+
+```cs
 internal class Program {
     private static void Main(string[] args) {
 
@@ -92,6 +103,13 @@ public class MyClass {
 │   │   ├── obj
 │   │   │   ├── Laboratorio33.csproj.nuget.dgspec.json
 │   │   │   ├── Laboratorio33.csproj.nuget.g.props
+│   │   │   └── project.nuget.cache
+│   │   └── Program.cs
+│   ├── Laboratorio33
+│   │   ├── Laboratorio33.csproj
+│   │   ├── obj
+│   │   │   ├── Laboratorio33.csproj.nuget.dgspec.json
+│   │   │   ├── Laboratorio33.csproj.nuget.g.props
 │   │   │   ├── Laboratorio33.csproj.nuget.g.targets
 │   │   │   ├── project.assets.json
 │   │   │   └── project.nuget.cache
@@ -158,13 +176,6 @@ public class MyClass {
 │   │   │   ├── Laboratorio46.csproj.nuget.g.props
 │   │   │   ├── Laboratorio46.csproj.nuget.g.targets
 │   │   │   ├── project.assets.json
-│   │   │   └── project.nuget.cache
-│   │   └── Program.cs
-│   └── Laboratorio47
-│       ├── Laboratorio47.csproj
-│       ├── obj
-│       │   ├── Laboratorio47.csproj.nuget.dgspec.json
-│       │   ├── Laboratorio47.csproj.nuget.g.props
 │       │   ├── Laboratorio47.csproj.nuget.g.targets
 │       │   ├── project.assets.json
 │       │   └── project.nuget.cache
