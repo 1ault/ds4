@@ -1,10 +1,24 @@
 # DS4
 
+```sh
 dotnet run
 
 dotnet clean
 
 dotnet new console -n [app_name]
+
+dotnet new console -lang "VB" -o [app_name]
+```
+
+## API
+
+### Console
+
+#### Print
+```sh
+
+```
+
 
 
 ## Tree
