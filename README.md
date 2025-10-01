@@ -6,30 +6,6 @@ dotnet clean
 
 dotnet new console -n [app_name]
 
-## Template
-
-```cs
-internal class Program 
-{
-    private static void Main(string[] args) 
-    {
-
-    }
-}
-```
-
-
-```cs
-internal class Program {
-    private static void Main(string[] args) {
-
-    }
-}
-
-public class MyClass {
-
-}
-```
 
 ## Tree
 
