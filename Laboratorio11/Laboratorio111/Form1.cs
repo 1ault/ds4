@@ -1,30 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public partial class Form1 : Form
+namespace Laboratorio111
 {
-    private Button btnClickThis;
-    private Label lblHelloWorld;
-    public Form1()
+    public partial class Form1 : Form
     {
-
-        btnClickThis = new Button();
-        btnClickThis.Text = "Click this";
-        btnClickThis.Left = 100;
-        btnClickThis.Top = 100;
-        btnClickThis.Click += (sender, e) =>
+        public Form1()
         {
-            lblHelloWorld.Text = "Hello World!";
-        };
+            InitializeComponent();
+        }
 
-
-
-        lblHelloWorld = new Label();
-        lblHelloWorld.Text = "Label 1";
-        lblHelloWorld.Left = 100;
-        lblHelloWorld.Top = 130;
-
-
-        Controls.Add(btnClickThis);
-        Controls.Add(lblHelloWorld);
+        private void btnClickThis_Click(object sender, EventArgs e)
+        {
+            this.lblHelloWorld.Text = "Hello World!";
+        }
     }
 }

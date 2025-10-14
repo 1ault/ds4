@@ -19,17 +19,19 @@ source ~/.zshrc
 
 ## Commands
 ```sh
-dotnet new console -n [app_name]
-
-dotnet new console -lang "VB" -o [app_name]
-
 dotnet run
 
 dotnet clean
 ```
 
-## Tree
+## Templates
+```sh
+dotnet new console -n [app_name]
 
+dotnet new winforms -n [app_name]
+```
+
+## Tree
 ```text
 .
 ├── api

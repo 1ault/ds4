@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "update(README.md, tree)"
+	git commit -m "update(Lab11)"
 	git push -u origin Laboratorios
 
 purge:
