@@ -39,9 +39,9 @@ public class Examples
         }
         catch (Exception ex)
         {
-
             System.Console.WriteLine($"Err type: {ex.GetType().Name}");
             System.Console.WriteLine($"Msg: {ex.Message}");
+            return;
         }
         finally
         {

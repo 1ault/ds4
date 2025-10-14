@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "update(Lab11)"
+	git commit -m "update(gitignore = *.7z) add(lab12)"
 	git push -u origin Laboratorios
 
 purge:
