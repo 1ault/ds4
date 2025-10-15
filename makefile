@@ -1,6 +1,6 @@
 git:
 	git add -A 
-	git commit -m "update(gitignore = *.7z) add(lab12)"
+	git commit -m $(comm)
 	git push -u origin Laboratorios
 
 purge:
@@ -10,7 +10,7 @@ purge:
 zip_example:
 	zip -r ./Laboratorio11.zip Laboratorio11
 
-FOLDER_LAB := $(wildcard Laboratorio*/)
+# FOLDER_LAB := $(wildcard Laboratorio*/)
 zip:
 	for dir in $(FOLDER_LAB); do \
 		zip -r "$${dir%/}.zip" "$$dir"; \

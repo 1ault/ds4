@@ -17,6 +17,12 @@ echo 'export DOTNET_CLI_TELEMETRY_OPTOUT=1' >> ~/.zshrc
 source ~/.zshrc
 ```
 
+## Cross Git
+```sh
+git config --global core.autocrlf input
+git config --global core.eol lf
+```
+
 ## Commands
 ```sh
 dotnet run

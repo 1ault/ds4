@@ -1,6 +1,15 @@
+# Editors
 **/.nvim/
 **/.vs/
+**/.vscode/
+
+## Binary folders
 **/Debug/
 **/bin/
+**/build/
+**/packages/
+
+# Compress files
 *.zip
 *.7z
+
