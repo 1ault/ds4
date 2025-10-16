@@ -1,1 +1,1 @@
-make git comm='commit -m "update(gitignore = *.7z) add(lab12)"'
+make git comm="add(lab13)"
