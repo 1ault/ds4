@@ -14,7 +14,6 @@ namespace Laboratorio12_2
 {
     public partial class frmProductos : Form
     {
-
         string connectionString = @"Data Source =.; Initial Catalog =Productos; Integrated Security = True; Encrypt=False;TrustServerCertificate=True";
         bool nuevo;
 

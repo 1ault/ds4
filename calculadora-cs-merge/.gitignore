@@ -1,0 +1,31 @@
+# Editors
+**/.nvim/
+**/.vs/
+**/.vscode/
+
+## Binary folders
+**/Debug/
+**/bin/
+**/build/
+**/packages/
+
+# Compress files
+*.zip
+*.7z
+
+# tmp
+**/bin/
+**/obj/
+*.tmp
+
+# unk
+*.pdb
+*.cache
+*.log
+.idea/
+thumbs.db
+.ds_store
+*.user
+*.suo
+*.userosscache
+*.sln.docstates

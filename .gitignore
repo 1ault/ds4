@@ -1,15 +1,19 @@
+# Git
+**/.git
+
 # Editors
 **/.nvim/
 **/.vs/
 **/.vscode/
 
-## Binary folders
+## Tmp folders
 **/Debug/
 **/bin/
 **/build/
 **/packages/
+*.tmp
+**/obj/
 
 # Compress files
 *.zip
 *.7z
-

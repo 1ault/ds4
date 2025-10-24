@@ -15,7 +15,7 @@ namespace Laboratorio13
     public partial class Laboratorio13 : Form
     {
 
-        string connectionString =@"Data Source =.; Initial Catalog = Northwind; Integrated Security = True; Encrypt=False;TrustServerCertificate=True";
+        string connectionString = @"Data Source =.; Initial Catalog = Northwind; Integrated Security = True; Encrypt=False;TrustServerCertificate=True";
         
     
 
