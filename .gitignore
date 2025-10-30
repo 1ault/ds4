@@ -15,5 +15,5 @@
 **/obj/
 
 # Compress files
-*.zip
-*.7z
+# *.zip
+# *.7z
