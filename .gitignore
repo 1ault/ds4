@@ -6,7 +6,7 @@
 **/.vs/
 **/.vscode/
 
-## Tmp folders
+## tmp
 **/Debug/
 **/bin/
 **/build/
@@ -17,3 +17,16 @@
 # Compress files
 # *.zip
 # *.7z
+
+
+# unk
+*.pdb
+*.cache
+*.log
+.idea/
+thumbs.db
+.ds_store
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
