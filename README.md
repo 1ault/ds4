@@ -37,6 +37,12 @@ dotnet new console -n [app_name]
 dotnet new winforms -n [app_name]
 ```
 
+
+cd "$env:ProgramFiles\IIS Express"
+.\appcmd set config /section:system.webServer/directoryBrowse /enabled:true
+.\appcmd.exe set config /section:system.webServer/directoryBrowse /enabled:true
+
+
 ## Tree
 ```text
 .
