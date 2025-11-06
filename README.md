@@ -42,6 +42,52 @@ cd "$env:ProgramFiles\IIS Express"
 .\appcmd set config /section:system.webServer/directoryBrowse /enabled:true
 .\appcmd.exe set config /section:system.webServer/directoryBrowse /enabled:true
 
+ConnectionString="data source=SQLEXPRESS;initial catalog=northwind;persist security info=True;Integrated Security=SSPI;"
+
+
+
+<asp:SqlDataSource ID="MyDataSource1" runat="server"
+    ConnectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;"
+    ProviderName="System.Data.SqlClient"
+    SelectCommand="SELECT ProductId, ProductName, UnitPrice FROM Products"
+    UpdateCommand="UPDATE Products SET [ProductName]=@ProductName, [UnitPrice]=@UnitPrice WHERE [ProductId]=@ProductId">
+</asp:SqlDataSource>
+
+
+<connectionStrings>
+<asp:SqlDataSource ID="MyDataSource1" runat="server"
+    ConnectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;"
+    ProviderName="System.Data.SqlClient"
+    SelectCommand="SELECT ProductId, ProductName, UnitPrice FROM Products"
+    UpdateCommand="UPDATE Products SET [ProductName]=@ProductName, [UnitPrice]=@UnitPrice WHERE [ProductId]=@ProductId">
+</asp:SqlDataSource>
+
+<add name="db.Name" 
+     connectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;" 
+     providerName="System.Data.SqlClient" 
+/>
+
+<add name="db.Name" 
+     connectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;" 
+     providerName="System.Data.SqlClient" 
+/>
+
+<connectionStrings>
+<add name="db.Name" 
+     connectionString="Data Source=.; Initial Catalog=northwind; Integrated Security=True;Encrypt=False; TrustServerCertificate=True;" 
+     providerName="System.Data.SqlClient" 
+/>
+</connectionStrings>
+
+
+web.config
+
+<configuration>
+	<connectionStrings>
+		<add name="db.Name"
+			 connectionString="Data Source=.; Initial Catalog=northwind; Integrated Security=True;Encrypt=False; TrustServerCertificate=True;"
+			 providerName="System.Data.SqlClient"/>
+	</connectionStrings>
 
 ## Tree
 ```text
