@@ -37,7 +37,8 @@ dotnet new console -n [app_name]
 dotnet new winforms -n [app_name]
 ```
 
-
+## Web c#
+```sh
 cd "$env:ProgramFiles\IIS Express"
 .\appcmd set config /section:system.webServer/directoryBrowse /enabled:true
 .\appcmd.exe set config /section:system.webServer/directoryBrowse /enabled:true
@@ -62,20 +63,21 @@ ConnectionString="data source=SQLEXPRESS;initial catalog=northwind;persist secur
     UpdateCommand="UPDATE Products SET [ProductName]=@ProductName, [UnitPrice]=@UnitPrice WHERE [ProductId]=@ProductId">
 </asp:SqlDataSource>
 
-<add name="db.Name" 
-     connectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;" 
-     providerName="System.Data.SqlClient" 
+<add name="db.Name"
+     connectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;"
+     providerName="System.Data.SqlClient"
 />
 
-<add name="db.Name" 
-     connectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;" 
-     providerName="System.Data.SqlClient" 
+<add name="db.Name"
+     connectionString="Data Source=.;Initial Catalog=northwind;Integrated Security=True;Encrypt=False;TrustServerCertificate=True;"
+     providerName="System.Data.SqlClient"
 />
+
 
 <connectionStrings>
-<add name="db.Name" 
-     connectionString="Data Source=.; Initial Catalog=northwind; Integrated Security=True;Encrypt=False; TrustServerCertificate=True;" 
-     providerName="System.Data.SqlClient" 
+<add name="db.Name"
+     connectionString="Data Source=.; Initial Catalog=northwind; Integrated Security=True;Encrypt=False; TrustServerCertificate=True;"
+     providerName="System.Data.SqlClient"
 />
 </connectionStrings>
 
@@ -88,6 +90,7 @@ web.config
 			 connectionString="Data Source=.; Initial Catalog=northwind; Integrated Security=True;Encrypt=False; TrustServerCertificate=True;"
 			 providerName="System.Data.SqlClient"/>
 	</connectionStrings>
+```
 
 ## Tree
 ```text

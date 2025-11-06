@@ -1,11 +1,11 @@
 all:
-	git add -A 
-	git commit -m "Update"
+	git add -A
+	git commit -m "add(lab17 lab18) update(readme.md)"
 	git push -u origin Laboratorios
 
 
 git:
-	git add -A 
+	git add -A
 	git commit -m $(comm)
 	git push -u origin Laboratorios
 
