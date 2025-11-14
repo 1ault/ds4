@@ -501,4 +501,6 @@ My: **https://localhost:44393/api/Access/HelloWorld**
 
 ## References
 
-[^DS4_Lab_19_Regis_Rivera]: **DS4-Lab-19.pdf** — Regis Rivera.
+<!--[^DS4_Lab_19_Regis_Rivera]: **DS4-Lab-19.pdf** — Regis Rivera.-->
+
+**DS4-Lab-19.pdf** — Regis Rivera.
