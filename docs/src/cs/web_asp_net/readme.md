@@ -297,7 +297,7 @@ public static class Api
 }
 ```
 
-## 7.2 ValuesControls
+### 7.2 ValuesControls
 
 **Solution Explorer** > `**Solution name**` > `**Project name**` > **(Anti-click)** > add > Controllers/ValuesController.cs
 
@@ -323,7 +323,7 @@ public class ValuesController : Controller
     }
 }
 ```
-## 7.3 View/Shared/_Layout.cshtml
+### 7.3 View/Shared/_Layout.cshtml
 
 **Solution Explorer** > `**Solution name**` > `**Project name**` > View/Shared/_Layout.cshtml
 
@@ -384,7 +384,7 @@ public class ValuesController : Controller
 </body>
 </html>
 ```
-## 7.4 View/Values/Details && index
+### 7.4 View/Values/Details && index
 
 
 ./View/Values/Index && Details <--Relation--> ./Controllers/ValuesController.cs
