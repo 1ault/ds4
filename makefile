@@ -1,6 +1,6 @@
 all:
 	git add -A
-	git commit git commit -F ./docs/commit.md
+	git commit -F ./docs/commit.md
 	git push -u origin Laboratorios
 
 
