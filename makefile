@@ -1,6 +1,6 @@
 all:
 	git add -A
-	git commit -m "add(lab17 lab18) update(readme.md)"
+	git commit git commit -F ./docs/commit.md
 	git push -u origin Laboratorios
 
 

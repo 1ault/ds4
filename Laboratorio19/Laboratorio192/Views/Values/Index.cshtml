@@ -1,0 +1,24 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+
+        @model string[]
+        <h2>All Values</h2>
+        <ul>
+            @foreach (var v in Model) { <li>@v</li> }
+        </ul>
+
+
+    </div>
+</body>
+</html>
