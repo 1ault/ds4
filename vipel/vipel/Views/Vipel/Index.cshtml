@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        Vipel
+
+
+
+        @model List<vipel.Models.WS.Historial.Historial>
+
+
+
+
+        <h2>All Values</h2>
+
+        <table class="database-data">
+            <tr class="tr-head">
+                <th>#</th>
+                <th>Num1</th>
+                <th>Op</th>
+                <th>Num2</th>
+                <th>Result</th>
+            </tr>
+            @*<tr class="database-no-data display-none">
+                <td class="database-no-data" colspan="7">
+                    No hay resultados.
+                </td>
+            </tr>*@
+
+            @if (Model == null || !Model.Any())
+            {
+                <p>No data</p>
+            }
+            else
+            {
+                foreach (var v in Model)
+                {
+                    <tr>
+                        <td>@v.Id</td>
+                        <td>@v.Num1</td>
+                        <td></td>
+                        <td>@v.Num2</td>
+                        <td></td>
+                    </tr>
+                }
+
+            }
+        </table>
+
+
+
+
+
+        @*@foreach (var v in Model)
+        {
+        <li>@v.Id - @v.Num1</li>
+        }*@
+        </ul>
+    </div>
+</body>
+</html>

@@ -16,7 +16,7 @@ catch (Exception ex)
 }
 finally
 {
-    
+
 }
 
 
@@ -55,10 +55,32 @@ public class Examples
             if (read_user is null) { return; }
             int val = int.Parse(read_user);
         }
-        catch (FormatException ex) {
+        catch (FormatException ex)
+        {
             System.Console.WriteLine($"{ex}");
         }
+
+
+        try
+        {
+
+        }
+        catch (FormatException ex)
+        {
+            MessageBox.Show($"[Err]: conexión sql. {ex}");
+            return;
+        }
+
+
+
+        try
+        {
+
+        }
+        catch (FormatException ex)
+        {
+            throw new Exception($"[Something went wrong!]: {ex}");
+        }
+
     }
 }
-
-

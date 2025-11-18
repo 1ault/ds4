@@ -66,3 +66,11 @@ foreach (int i in numbers)
 {
 
 }
+
+
+foreach (int i in Enumerable.Range(0, 10))
+{
+    Console.WriteLine(i);
+}
+
+1 -> 10

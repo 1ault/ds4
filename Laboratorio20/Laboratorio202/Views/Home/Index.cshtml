@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+    @model Laboratorio202.Models.WS.MatrizTable.MatrizTable
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="/Home/Index" method="post">
+            <label>Ingrese un numero:</label>
+            <input type="number" name="val" placeholder="4" />
+            <button type="submit">Send</button>
+        </form>
+
+
+        <h2>Tablas de Matriz</h2>
+        @{ 
+
+            if (String.IsNullOrEmpty(Model.msg) || Model.msg.Contains("Err"))
+            {
+                <p>@Model.msg</p>
+            }
+            else {
+                @*<table style="text-align: center; table-layout: fixed;">*@
+                <table style="text-align: center; table-layout: fixed; width: 100%;">
+                    <caption>@Model.msg</caption>
+
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            @{
+                                for (int i = 1; i < Convert.ToInt32(Model.main_val) + 1; i += 1)
+                                {
+                                    <th scope="col">@i</th>
+                                }
+                            }
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            int iter = 0;
+                            for (int u = 1; u <= Convert.ToInt32(Model.main_val); u += 1)
+                            {
+                                <tr>
+                                    <th scope="row">@u</th>
+                                    @{
+                                        //for (int i = 0; i < Model.result.Length; i += 1)
+                                        for (int i = 0; i < Convert.ToInt32(Model.main_val); i += 1)
+                                        {
+                                            <td>@Model.result[iter]</td>
+                                            iter += 1;
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+
+
+    </div>
+</body>
+</html>

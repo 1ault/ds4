@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+    @model Laboratorio201.Models.WS.MulTable.MulTable
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="/Home/Index" method="post">
+            <label>Ingrese un numero:</label>
+            <input type="number" name="val" placeholder="10" />
+            <button type="submit">Send</button>
+        </form>
+
+        <h2>Tablas de Multiplicar</h2>
+        @{
+            if (
+                String.IsNullOrEmpty(Model.msg) || Model.msg.Contains("Err")
+                )
+            {
+                <p>@Model.msg</p>
+            }
+            else
+            {
+                <h2></h2>
+
+                <table style="text-align: center;">
+                    <caption>@Model.msg</caption>
+
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" colspan="7">Result</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var row in Model.result)
+                        {
+                            <tr>
+                                <th scope="row">Table:</th>
+                                <td>@row</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+
+
+    </div>
+</body>
+</html>
