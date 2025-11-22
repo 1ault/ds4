@@ -23,9 +23,13 @@ namespace vipel.Controllers
         {
 
             var item = await Api.Get<string>("api/vil/get/Index");
+
+            string endpoint = "https://localhost:44386/api/";
             //var item = await Api.Get<Historial[]>($"api/Access/DBCalc");
             //var reply = await Api.Get<Reply<List<Historial>>>("api/Vipel/DBCalc");
-            return View(model: item);
+
+
+            return View(model: endpoint);
         }
 
         [HttpGet]

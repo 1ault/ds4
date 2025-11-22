@@ -26,7 +26,8 @@ const handlers = {
         
         e.preventDefault();
 
-        const endpoint = "https://localhost:44386/api/";
+        const endpoint = window.AppConfig.endpoint;
+        
 
         ////formTextareaId.textContent = data.id;
         ////formTextareaNombre.textContent = data.nombre;

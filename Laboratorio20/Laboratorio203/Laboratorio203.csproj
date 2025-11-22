@@ -162,6 +162,7 @@
     </Compile>
     <Compile Include="Models\WS\Laptops.cs" />
     <Compile Include="Models\WS\Reply.cs" />
+    <Compile Include="Models\WS\ServerConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Api.cs" />
     <Compile Include="Services\SQLServer.cs" />

@@ -1,8 +1,15 @@
 ﻿
 @{
     Layout = null;
+    @model Laboratorio203.Models.WS.ServerConfig.ServerConfig
 }
 <main>
+    <script>
+        window.AppConfig = {
+            endpoint: "@Model.Endpoint"
+        };
+    </script>
+
     <script type="module" src="~/Assets/index.js"></script>
 
     <form name="registro">

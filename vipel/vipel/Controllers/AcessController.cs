@@ -11,88 +11,21 @@ namespace vipel.Controllers
     {
         private SQLServer sql_server = new SQLServer();
 
-        // api/Access/DBCalc
-
-        // api/end_point/get/
-        [HttpGet]
-        //public IEnumerable<Historial> DBCalc()
-        public Reply<List<Historial>> DBCalc()
-        {
-            // Api
-            // Guard
-
-
-            List<Historial> list_historial = new List<Historial>();
-
-            sql_server.SelectCalcHistorial();
-
-            while (sql_server.Read())
-            {
-                try
-                {
-                    var historial = new Historial
-                    {
-                        Id = Convert.ToInt64(sql_server.List()["id"]),
-                        Num1 = Convert.ToDouble(sql_server.List()["Num1"]),
-                        Op = Convert.ToChar(sql_server.List()["Op"]),
-                        Num2 = Convert.ToDouble(sql_server.List()["Num2"])
-                    };
-
-                    list_historial.Add(historial);
-                }
-                catch (Exception ex)
-                {
-                    //throw new Exception($"[Get json error]: {ex}");
-                    //MessageBox.Show($"[Err]: Parsing error. {ex}");
-                    return new Reply<List<Historial>>
-                    {
-                        Result = 0,
-                        Message = "[Err]: Historial Error",
-                        Data = list_historial
-                    };
-                }
-            }
-
-
-            return new Reply<List<Historial>>
-            {
-                Result = 1,
-                Message = "[OK]: Historial Load",
-                Data = list_historial
-            };
-            //return list_historial;
-            //list_historial
-        }
-
-        // api/Access/DBInfo
-        [HttpGet]
-        public IEnumerable<string> DBInfo()
-        {
-            //return new Reply
-            //{
-            //    Result = 1,
-            //    Data = { },
-            //    Message = "Mi Hello World en API"
-            //};
-            return new string[] { "value1", "value2" };
-        }
-
-
-        // GET: api/Access/get
+        // GET: api/Access/Get
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Access/get/5
+        // GET: api/Access/Get/5
         [HttpGet]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/Access
+        // POST: api/Access/Post
         public void Post([FromBody] string value)
         {
         }
