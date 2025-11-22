@@ -6,10 +6,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
-
 using Newtonsoft.Json;
 
-namespace vipel.Services.Api
+namespace Laboratorio203.Services.Api
 {
     public static class Api
     {
