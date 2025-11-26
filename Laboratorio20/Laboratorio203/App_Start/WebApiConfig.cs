@@ -19,6 +19,10 @@ namespace Laboratorio203
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            // force JSON responses
+            var json = config.Formatters.JsonFormatter;
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
     }
 }

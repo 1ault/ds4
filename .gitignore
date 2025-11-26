@@ -8,7 +8,7 @@
 
 ## tmp
 **/Debug/
-**/bin/
+# **/bin/
 **/build/
 **/packages/
 *.tmp
@@ -17,16 +17,3 @@
 # Compress files
 # *.zip
 *.7z
-
-
-# unk
-*.pdb
-*.cache
-*.log
-.idea/
-thumbs.db
-.ds_store
-*.user
-*.suo
-*.userosscache
-*.sln.docstates

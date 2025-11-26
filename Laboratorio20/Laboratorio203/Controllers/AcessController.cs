@@ -18,6 +18,8 @@ namespace Laboratorio203.Controllers
 
         private SQLServer sql_server = new SQLServer();
 
+ 
+
         // GET: api/Acess/get
         [HttpGet]
         public Reply<List<Laptops>> Get()

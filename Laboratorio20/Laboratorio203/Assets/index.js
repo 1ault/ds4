@@ -26,6 +26,7 @@ const handlers = {
         
         e.preventDefault();
 
+
         const endpoint = window.AppConfig.endpoint;
         
 
