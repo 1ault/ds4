@@ -22,14 +22,7 @@ namespace vipel.Controllers
         [System.Web.Http.HttpPost]
         public Reply<string> Login([FromBody] User user)
         {
-            string result = Guard.UserLogin(user);
-
-            return new Reply<string>
-            {
-                Result = true,
-                Message = "ok",
-                Data = $"Login",
-            };
+            return Guard.UserLogin(user);
         }
 
 

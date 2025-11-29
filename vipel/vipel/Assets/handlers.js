@@ -2,64 +2,66 @@
 import * as config from "./config.js";
 
 export async function onFormSubmit(e) {
-    e.preventDefault();
+	e.preventDefault();
 
-    console.log(e);
-    console.log(e.submitter);
+	console.log(e);
+	console.log(e.submitter);
 
-    if (!e.submitter) {
-        return;
-    } 
+	if (!e.submitter) {
+		return;
+	}
 
-    if (e.submitter.id.includes("singup")) {
-        const json_user = {
-            Username: htmlElement.SignUp.inputName.value,
-            Email: htmlElement.SignUp.inputEmail.value,
-            Password: htmlElement.SignUp.inputPassword.value,
-        };
+	if (e.submitter.id.includes("singup")) {
+		const json_user = {
+			Username: htmlElement.SignUp.inputName.value,
+			Email: htmlElement.SignUp.inputEmail.value,
+			Password: htmlElement.SignUp.inputPassword.value,
+		};
 
-        const response = await fetch(config.Endpoint.Access.SingUp, {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(json_user)
-        });
+		console.log(json_user);
 
-        if (!response.ok) {
-            throw new Error("Error: " + response.status);
-        }
+		const response = await fetch(config.Endpoint.Access.SingUp, {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(json_user),
+		});
 
-        const json = await response.json();
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
 
-        console.log(json);
-        return;
-    }
+		const json = await response.json();
 
-    if (e.submitter.id.includes("login")) {
-        const json_user = {
-            Username: htmlElement.LogIn.inputName.value,
-            Email: htmlElement.LogIn.inputEmail.value,
-            Password: htmlElement.LogIn.inputPassword.value,
-        };
+		console.log(json);
+		return;
+	}
 
-        const response = await fetch(config.Endpoint.Access.Login, {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(json_user)
-        });
+	if (e.submitter.id.includes("login")) {
+		const json_user = {
+			Username: htmlElement.LogIn.inputName.value,
+			Email: htmlElement.LogIn.inputEmail.value,
+			Password: htmlElement.LogIn.inputPassword.value,
+		};
 
-        if (!response.ok) {
-            throw new Error("Error: " + response.status);
-        }
+		const response = await fetch(config.Endpoint.Access.Login, {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(json_user),
+		});
 
-        const data = await response.json();
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
 
-        console.log(data);
-        return;
-    }
+		const data = await response.json();
+
+		console.log(data);
+		return;
+	}
 }
