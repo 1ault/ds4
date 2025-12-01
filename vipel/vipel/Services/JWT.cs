@@ -1,25 +1,38 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Protocols.WSTrust;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using vipel.Models.WS;
+using System.Security.Claims;
+using System.Web;
 
 
 namespace vipel.Services
 {
-    public class JWT
+    public static class JWT
     {
         public static string GenerateToken(User user)
         {
-            var secret = Env.GetJwtSecret();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
 
-            var claims = new[]
+            string secret = Env.GetJwtSecret();
+            string issuer = Env.GetJwtIssuer();
+            string audice = Env.GetJwtAudience();
+
+
+            SymmetricSecurityKey securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            Claim[] claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.ID),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
@@ -27,16 +40,22 @@ namespace vipel.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var token = new JwtSecurityToken(
-                issuer: Env.GetJwtIssuer(),
-                audience: Env.GetJwtAudience(),
+
+            JwtSecurityToken token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audice,
                 claims: claims,
                 notBefore: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddMinutes(30),
-                signingCredentials: creds
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: credentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public static ClaimsIdentity JwtIdentityCheck(this HttpContext context)
+        {
+            return context.User.Identity as ClaimsIdentity;
         }
     }
 }

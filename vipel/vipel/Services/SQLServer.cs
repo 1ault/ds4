@@ -102,15 +102,37 @@ namespace vipel.Services
                 sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
                 sql_connection.Open();
 
+                //string command = @"
+                //SELECT 1 [ID], [Username], [Password], [Email], [Role]
+                //FROM [vipel].[dbo].[User]
+                //WHERE [Username] = @Username AND [Email] = @Email 
+                //";
+
+                //sql_command = new SqlCommand(command, sql_connection);
+
+                //sql_command.Parameters.AddWithValue("@Username", user.Username);
+                //sql_command.Parameters.AddWithValue("@Email", user.Email);
+
+                //sql_data_reader = sql_command.ExecuteReader();
+
+                //if (sql_data_reader.Read() == false)
+                //{
+                //    return new Reply<string>
+                //    {
+                //        Result = false,
+                //        Message = $"Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
+                //        Data = "Username or Email are incorrect. Please try again.",
+                //    };
+                //}
+
                 string command = @"
                 SELECT 1 [ID], [Username], [Password], [Email], [Role]
                 FROM [vipel].[dbo].[User]
-                WHERE [Username] = @Username AND [Email] = @Email 
+                WHERE [Email] = @Email 
                 ";
 
                 sql_command = new SqlCommand(command, sql_connection);
 
-                sql_command.Parameters.AddWithValue("@Username", user.Username);
                 sql_command.Parameters.AddWithValue("@Email", user.Email);
 
                 sql_data_reader = sql_command.ExecuteReader();
@@ -144,12 +166,13 @@ namespace vipel.Services
                     };
                 }
 
-                
+                string token = JWT.GenerateToken(user: db_user);
+
                 return new Reply<string>
                 {
                     Result = true,
                     Message = $"Login successful - {SQLServer.EnumHttp.HttpStatusOK}",
-                    Data = $"{(int)SQLServer.EnumHttp.HttpStatusOK}",
+                    Data = token,
                 };
             }
             catch (Exception ex)

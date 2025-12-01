@@ -19,17 +19,19 @@ namespace vipel
     {
         protected void Application_Start()
         {
+            //string root = Server.MapPath("~");
+            //Env.Load(Path.Combine(root, ".env"));
+
+            DotNetEnv.Env.Load(Server.MapPath("~/.env"));
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-
-            string root = Server.MapPath("~");
-            Env.Load(Path.Combine(root, ".env"));
-
             
+
         }
     }
 }

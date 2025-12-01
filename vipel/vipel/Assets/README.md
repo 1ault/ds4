@@ -100,3 +100,66 @@ Simulant
 
 https://stackoverflow.com/questions/63769243/checking-if-hashed-values-are-the-same
 https://crackstation.net/hashing-security.htm
+
+
+
+
+
+
+"System.InvalidOperationException: JWT secret is not configured.\r\n   at vipel.Services.JWT.GenerateToken(User user) in C:\\Users\\user\\source\\ault_git\\ds4\\vipel\\vipel\\Services\\JWT.cs:line 30\r\n   at vipel.Services.SQLServer.UserLogin(User user) in C:\\Users\\user\\source\\ault_git\\ds4\\vipel\\vipel\\Services\\SQLServer.cs:line 147"
+
+
+		const token2 = localStorage.getItem("jwt");
+
+		console.log(token2);
+		
+		
+		https://localhost:44372/api/Access/get/
+		
+		
+https://localhost:44379/UserStatus
+
+https://localhost:44379/api/Access/UserStatus
+    "Data": ""
+
+Authorization
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjAiLCJqdGkiOiJjYjZhOWM4Mi0xMTRiLTRhMTgtOTQ2Zi03ZTE3ZDgxNjcwZWIiLCJuYmYiOjE3NjQ1NTI4NDYsImV4cCI6MTc2NDU1NDY0NiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDM3OSJ9.0V0SiJ0gP0LF7mVXxeJ966MFQTFtPrpPzhjBarjTFlA
+
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjAiLCJqdGkiOiIyZGUzN2I0YS03NzJkLTQ1YWMtOGIyZS1lZDhlZTVmMGJlMmQiLCJuYmYiOjE3NjQ1NTMzNjAsImV4cCI6MTc2NDU1NTE2MCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDM3OSJ9._rRgz_bu6jctws-14AQzF1NHOvvgMt2xGI-aMkf7guc"
+
+
+{
+{
+https://localhost:44379/api/Access/UserStatus
+
+https://localhost:44379/api/Access/UserCheck
+Authorization
+
+
+
+            //byte[] key;
+            //try 
+            //{ 
+            //    key = Convert.FromBase64String(secret); 
+            //}
+            //catch 
+            //{ 
+            //    key = Encoding.UTF8.GetBytes(secret); 
+            //}
+
+
+https://localhost:44379/api/Access/UserCheck
+Authorization
+
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjAiLCJqdGkiOiI1ZDY1M2Y0Zi03NmYxLTQ1ZTktOGZjMy00NjVhNjI2MGVmOWUiLCJuYmYiOjE3NjQ1NTQxOTcsImV4cCI6MTc2NDU1NTk5NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDM3OSJ9.T1hw870gW7UEGR_XjuYJAtj2RTgZIWfheN92rBr7kAw
+
+
+
+
+System.NullReferenceException
+  HResult=0x80004003
+  Message=Object reference not set to an instance of an object.
+  Source=vipel
+  StackTrace:
+   at vipel.Controllers.AccessController.UserStatus() in C:\Users\user\source\ault_git\ds4\vipel\vipel\Controllers\AccessController.cs:line 58

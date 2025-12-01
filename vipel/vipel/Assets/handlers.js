@@ -1,4 +1,4 @@
-﻿import * as htmlElement from "./htmlElement.js";
+import * as htmlElement from "./htmlElement.js";
 import * as config from "./config.js";
 
 export async function onFormSubmit(e) {
@@ -41,7 +41,7 @@ export async function onFormSubmit(e) {
 
 	if (e.submitter.id.includes("login")) {
 		const json_user = {
-			Username: htmlElement.LogIn.inputName.value,
+			// Username: htmlElement.LogIn.inputName.value,
 			Email: htmlElement.LogIn.inputEmail.value,
 			Password: htmlElement.LogIn.inputPassword.value,
 		};
@@ -61,7 +61,14 @@ export async function onFormSubmit(e) {
 
 		const data = await response.json();
 
-		console.log(data);
+		if (data.Result == true) {
+			// console.log(data);
+			const token = data.Data;
+			localStorage.setItem("jwt", token);
+
+			window.location.href = "/vipel";
+		}
+
 		return;
 	}
 }

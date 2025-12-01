@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Web;
 using static System.Net.WebRequestMethods;
@@ -23,7 +24,8 @@ namespace vipel.Services
     {
         public Env()
         {
-            //System.Diagnostics.Debug.WriteLine("Loaded JWT_SECRET = " + secret);
+            //System.Diagnostics.Debug.WriteLine("Loaded
+            //= " + secret);
             //var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
 
             //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
@@ -38,17 +40,32 @@ namespace vipel.Services
 
         public static string GetJwtSecret()
         {
-            return Environment.GetEnvironmentVariable("JWT_SECRET");
+            string jwt = Environment.GetEnvironmentVariable("JWT_KEY");
+            if (string.IsNullOrWhiteSpace(jwt))
+            {
+                throw new InvalidOperationException("JWT Key is not configured.");
+            }
+            return jwt;
         }
 
         public static string GetJwtAudience()
         {
-            return Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+            string jwt = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+            if (string.IsNullOrWhiteSpace(jwt))
+            {
+                throw new InvalidOperationException("JWT Key is not configured.");
+            }
+            return jwt;
         }
 
         public static string GetJwtIssuer()
         {
-            return Environment.GetEnvironmentVariable("JWT_ISSUER");
+            string jwt = Environment.GetEnvironmentVariable("JWT_ISSUER");
+            if (string.IsNullOrWhiteSpace(jwt))
+            {
+                throw new InvalidOperationException("JWT Key is not configured.");
+            }
+            return jwt;
         }
     }
 }

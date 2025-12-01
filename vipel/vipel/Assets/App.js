@@ -4,96 +4,120 @@
 import * as templates from "./templates.js";
 import * as handlers from "./handlers.js";
 import * as htmlElement from "./htmlElement.js";
+import * as user from "./User.js";
 
 const Result = {
-    OK: 0,
-    ERR: 1,
+	OK: 0,
+	ERR: 1,
 };
 
-function App() {
+async function App() {
+	// console.log(window.location.hash);
+	// console.log(window.location.pathname);
 
-    // /#/path
-    console.log(window.location.hash);
-    console.log(window.location.pathname);
+	const token = localStorage.getItem("jwt");
+	if (token && window.location.pathname != "/vipel") {
+		window.location.href = "/vipel";
+		return;
+	}
 
-    
-    if (window.location.pathname === "/login") {
-        htmlElement.body.innerHTML = templates.initLogIn;
-        htmlElement.LogIn.form.addEventListener("submit", handlers.onFormSubmit);
-        return;
-    }
+	if (
+		!window.location.pathname ||
+		window.location.pathname === "/" ||
+		window.location.pathname === "" ||
+		window.location.pathname === "#/" ||
+		window.location.pathname.includes("#/singup")
+	) {
+		window.location.href = "/singup";
+		return;
+	}
 
-    if (!window.location.pathname 
-        || window.location.pathname === "/singup"
-        || window.location.pathname === "/"
-        || window.location.pathname === ""
-        || window.location.pathname === "#/"
-        || window.location.pathname.includes("#/singup")
-    ) {
+	if (window.location.pathname === "/singup") {
+		htmlElement.body.innerHTML = templates.initSignUp;
+		htmlElement.SignUp.form.addEventListener("submit", handlers.onFormSubmit);
+		return;
+	}
 
-        htmlElement.body.innerHTML = templates.initSignUp;
-        htmlElement.SignUp.form.addEventListener("submit", handlers.onFormSubmit);
-        return;
-    }
+	if (window.location.pathname === "/login") {
+		htmlElement.body.innerHTML = templates.initLogIn;
+		htmlElement.LogIn.form.addEventListener("submit", handlers.onFormSubmit);
+		return;
+	}
 
-    
-    // if (!window.location.hash 
-    //     || window.location.hash === ""
-    //     || window.location.hash === "#/"
-    //     || window.location.hash.includes("#/register")
-    // ) {
+	if (!token) {
+		window.location.href = "/login";
+	}
 
-    //     htmlElement.body.innerHTML = templates.initSignUp;
-    //     htmlElement.SignUp.form.addEventListener("submit", handlers.onFormSubmit);
-    //     return;
-    // }
+	if (window.location.pathname === "/vipel") {
+		console.log("Vipel");
 
-    // if (window.location.hash.includes("#/login")) {
-    //     htmlElement.body.innerHTML = templates.initLogIn;
-    //     htmlElement.LogIn.form.addEventListener("submit", handlers.onFormSubmit);
-    //     return;
-    // }
-   
-    return;
-    
+		if ((await user.CheckToken(token)) == false) {
+			window.location.href = "/login";
+			return;
+		}
 
-    // 
-// console.log("module namespace:", htmlElement);
-// console.log("available exports:", Object.keys(htmlElement));
-// console.log("default export:", htmlElement.default);
+		const user_status = await user.CheckStatus(token);
+		console.log(user_status);
+		
+		
+		htmlElement.body.innerHTML = templates.initLogIn;
+		// console.log(user_status);
+		// htmlElement.body.innerHTML = templates.initLogIn;
+		// htmlElement.LogIn.form.addEventListener("submit", handlers.onFormSubmit);
+		return;
+	}
+	// if (window.location.pathname === "/vipel") {
+	// 	htmlElement.body.innerHTML = templates.initLogIn;
+	// 	htmlElement.LogIn.form.addEventListener("submit", handlers.onFormSubmit);
+	// 	return;
+	// }
 
+	// if (!window.location.hash
+	//     || window.location.hash === ""
+	//     || window.location.hash === "#/"
+	//     || window.location.hash.includes("#/register")
+	// ) {
 
+	//     htmlElement.body.innerHTML = templates.initSignUp;
+	//     htmlElement.SignUp.form.addEventListener("submit", handlers.onFormSubmit);
+	//     return;
+	// }
 
-    // console.log(document.querySelector("#form-login"));
-    // console.log(htmlElement);
-    // console.log(htmlElement.LogIn);
+	// if (window.location.hash.includes("#/login")) {
+	//     htmlElement.body.innerHTML = templates.initLogIn;
+	//     htmlElement.LogIn.form.addEventListener("submit", handlers.onFormSubmit);
+	//     return;
+	// }
 
-    // console.log(htmlElement.LogIn);
-    // console.log(htmlElement.LogIn.formLogin);
-    // console.log(document.querySelector("#form-login"));
-    // htmlElement.LogIn.formLogin.addEventListener("submit", handlers.onFormSubmit);
+	//
+	// console.log("module namespace:", htmlElement);
+	// console.log("available exports:", Object.keys(htmlElement));
+	// console.log("default export:", htmlElement.default);
 
-    return;
+	// console.log(document.querySelector("#form-login"));
+	// console.log(htmlElement);
+	// console.log(htmlElement.LogIn);
 
+	// console.log(htmlElement.LogIn);
+	// console.log(htmlElement.LogIn.formLogin);
+	// console.log(document.querySelector("#form-login"));
+	// htmlElement.LogIn.formLogin.addEventListener("submit", handlers.onFormSubmit);
 
-    // //let login_check = Login();
+	// //let login_check = Login();
 
-    // htmlElement.body.innerHTML = templates.initSignUp;
-    // return;
+	// htmlElement.body.innerHTML = templates.initSignUp;
+	// return;
 
+	// if (login_check.Result == Result.ERR) {
+	//     htmlElement.body.innerHTML = templates.initLogIn;
+	//     htmlElement.LogIn.formLogin.addEventListener()
+	//     return;
+	// }
 
-    // if (login_check.Result == Result.ERR) {
-    //     htmlElement.body.innerHTML = templates.initLogIn;
-    //     htmlElement.LogIn.formLogin.addEventListener()
-    //     return;
-    // }
+	// const data = await response.json();
 
-    // const data = await response.json();
-
-    // console.log(data);
-
+	// console.log(data);
 }
-
 
 document.addEventListener("DOMContentLoaded", App);
 window.addEventListener("hashchange", App);
@@ -116,12 +140,9 @@ window.addEventListener("hashchange", App);
 //        body: JSON.stringify(laptops_json)
 //    });
 
-
 //    if (!response.ok) {
 //        throw new Error("Error: " + response.status);
 //    }
 
-
 //    return Result;
 //}
-
