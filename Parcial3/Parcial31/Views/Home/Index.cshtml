@@ -7,13 +7,30 @@
 <main>
     <script>
         window.AppConfig = {
-            endpoint: "@Model.Endpoint"
+            endpoint: "@Model.EndpointAcess",
         };
     </script>
 
-    <script type="module" src="~/Assets/index.js"></script>
 
-    <form>
+    <script type="module" src="~/Assets/App.js"></script>
+
+
+
+    <form action="" id="form">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <button type="submit" id="login">Login</button>
+
+        <label for="Status" id="status">Status: </label>
+
     </form>
 
+
+    <content id="content">
+
+    </content>
+
 </main>
+

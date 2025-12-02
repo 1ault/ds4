@@ -14,7 +14,7 @@ namespace Parcial31.Controllers
 
             ServerConfig model = new ServerConfig
             {
-                EndpointAcess = "https://localhost:44386/api/Acess/"
+                EndpointAcess = "https://localhost:44310/api/Acess"
             };
 
             

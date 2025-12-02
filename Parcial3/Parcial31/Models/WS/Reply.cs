@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Parcial31.Models.WS.Reply
+namespace Parcial31.Models.WS
 {
     public class Reply<T>
     {
-        public int Result { get; set; } = default;
-        public string Message { get; set; } = default;
-        public T Data { get; set; } = default;
+        public bool Result { get; set; } // success = true, failure = false
+        public string Message { get; set; }
+        public T Data { get; set; }
     }
 }

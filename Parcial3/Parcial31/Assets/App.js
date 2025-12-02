@@ -1,76 +1,62 @@
 ﻿
 const htmlElemnts = {
-    from: document.querySelector("form")
+    from: document.querySelector("#form"),
+    buttonLogin: document.querySelector("#login"),
+    inputName:  document.querySelector("#name"),
+	inputPassword: document.querySelector("#password"),
+	status: document.querySelector("#status"),
 }
 
+const Endpoint = {
+	Acess: {
+		Get: "${window.AppConfig.EndpointAcess}/get/",
+		Put: "${window.AppConfig.EndpointAcess}/put/",
+		Post: "${window.AppConfig.EndpointAcess}/post/",
+		Delete: "${window.AppConfig.EndpointAcess}/delete/",
+		Login: `https://localhost:44310/api/Acess/Login/`
+	},
+};
 
 const handlers = {
-	onFormSubmit(e) {
+	async onFormSubmit(e) {
 		e.preventDefault();
 
 
-		if (e.submitter.classList.contains("button-buscar")) {
-			const url = `${window.AppConfig.EndpointAcess}get/`;
+		if (e.submitter.id.includes("login")) 
+		{
+			const json_user = {
+				Username: htmlElemnts.inputName.value,
+				Password: htmlElemnts.inputPassword.value,
+			};
 
-            try {
-                const response = await fetch(url);
+			const response = await fetch(Endpoint.Acess.Login, {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(json_user),
+			});
+	
+			if (!response.ok) {
+				throw new Error("Error: " + response.status);
+			}
 
-                if (!response.ok) {
-					throw new Error("Error: " + response.status);
-                }
+			
+			
+			const data = await response.json();
+			console.log(data);
 
-                const data = await response.json();
-				console.log(data);
+			if (data.Result == true) {
+				htmlElemnts.status.innerHTML = "status: ok";
+			} else {
+				htmlElemnts.status.innerHTML = "status: err";
+			}
 
-
-            } catch (err) {
-				console.error("Fetch error:", err);
-            }
+			return data;
 		}
-
-
-		// console.log(e.submitter.classList.contains("limpiar"));
-		if (e.submitter.classList.contains("limpiar")) {
-			utils.onClickButtonLimpiar();
-			return;
-		}
-
-		if (utils.checkFormRegistro() == false) {
-			return;
-		}
-
-		if (htmlElemnts.fromRegistroEdad.value === "") {
-			htmlElemnts.fromRegistroEdad.value = "void";
-		}
-
-		const nombre = htmlElemnts.fromRegistroNombre.value;
-		const apellido = htmlElemnts.fromRegistroApellido.value;
-		const email = htmlElemnts.fromRegistroEmail.value;
-		let edad = htmlElemnts.fromRegistroEdad.value;
-		let carrera =
-			htmlElemnts.fromRegistroCarrera.options[
-				htmlElemnts.fromRegistroCarrera.selectedIndex
-			].value;
-
-		// check void
-		htmlElemnts.tableMainData.innerHTML += templates.row(
-			nombre,
-			apellido,
-			email,
-			edad,
-			carrera,
-		);
-		// Button delete
-
-		utils.tableResetVal();
-
-		utils.attacDeleteButtons();
-		htmlElemnts.fromRegistro.reset();
-	},
+	}
 }
-
-
-
 
 
 function App() {
