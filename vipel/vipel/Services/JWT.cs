@@ -8,8 +8,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Web;
 using vipel.Models.WS;
-using System.Security.Claims;
-using System.Web;
 
 
 namespace vipel.Services

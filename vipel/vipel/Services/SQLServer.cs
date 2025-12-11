@@ -1,10 +1,16 @@
 ﻿using Microsoft.Ajax.Utilities;
 using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client;
 using Sprache;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+
+//using System.Data;
+//using System.Data.SqlClient;
+
 //using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -84,6 +90,142 @@ namespace vipel.Services
         //}
 
 
+        public static Reply<List<object>> UserGetPost()
+        {
+            SqlConnection sql_connection = null;
+            SqlCommand sql_command = null;
+            SqlDataReader sql_data_reader = null;
+            User db_user = null;
+
+            List<object> list = new List<object>();
+
+            try
+            {
+                sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
+                sql_connection.Open();
+
+                sql_command = new SqlCommand("[dbo].[UserGetPost]", sql_connection);
+                sql_command.CommandType = CommandType.StoredProcedure;
+
+
+                sql_data_reader = sql_command.ExecuteReader();
+
+
+                while (sql_data_reader.Read())
+                {
+                    object item = new
+                    {
+                        PageID = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("PageID")),
+                        ModuleID = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("ModuleID")),
+                        ModuleTypeID = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("ModuleTypeID")),
+                        ModuleOrder = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("ModuleOrder")),
+                        ModuleJson = sql_data_reader.GetString(sql_data_reader.GetOrdinal("ModuleJson"))
+                    };
+
+                    list.Add(item);
+                }
+
+
+                return new Reply<List<object>>
+                {
+                    Result = true,
+                    Message = $"Post Ok",
+                    Data = new List<object>(),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new Reply<List<object>>
+                {
+                    Result = false,
+                    Message = $"Server error. Please try again later.",
+                    Data = new List<object>(),
+                };
+            }
+            finally
+            {
+                if (sql_data_reader != null) { sql_data_reader.Close(); }
+
+                if (sql_command != null) { sql_command.Dispose(); }
+
+                if (sql_connection != null) { sql_connection.Close(); }
+            }
+        }
+
+        public static Reply<List<User>> AdminGetUser()
+        {
+
+            SqlConnection sql_connection = null;
+            SqlCommand sql_command = null;
+            SqlDataReader sql_data_reader = null;
+            List<User> list_user = new List<User>();
+            try
+            {
+                string command = @"
+                SELECT [ID], [Username], [Email], [Role]
+                FROM [vipel].[dbo].[User]
+                ";
+                
+                sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
+                sql_connection.Open();
+
+                sql_command = new SqlCommand(command, sql_connection);
+
+                sql_data_reader = sql_command.ExecuteReader();
+
+                while (sql_data_reader.Read())
+                {
+                    //this.lstHistorial.Items.Add($"{this.SqlListar["Num1"].ToString()}, {this.SqlListar["Op"].ToString()}, {this.SqlListar["Num2"].ToString()}, {this.SqlListar["Result"].ToString()}. {this.SqlListar["DateCalc"].ToString()}");
+
+                    list_user.Add(
+                        new User
+                        {
+                            ID = sql_data_reader["ID"].ToString(),
+                            Email = sql_data_reader["Email"].ToString(),
+                            Username = sql_data_reader["Username"].ToString(),
+                            Role = sql_data_reader["Role"].ToString(),
+                        });                  
+                }
+
+                return new Reply<List<User>>
+                {
+                    Result = false,
+                    Message = $"Ok",
+                    Data = list_user,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Reply<List<User>>
+                {
+                    Result = false,
+                    Message = $"Server error. Please try again later.",
+                    Data = new List<User>(),
+                };
+            }
+            finally
+            {
+                if (sql_data_reader != null)
+                {
+                    sql_data_reader.Close();
+                    sql_data_reader.Dispose();
+                }
+
+                if (sql_command != null)
+                {
+                    sql_command.Dispose();
+                }
+
+                if (sql_connection != null)
+                {
+                    sql_connection.Close();
+                    sql_connection.Dispose();
+                }
+            }
+        }
+
+
         //private string command;
         //private SqlCommand SqlConsulta;
         //private SqlConnection SqlConexion;
@@ -142,8 +284,9 @@ namespace vipel.Services
                     return new Reply<string>
                     {
                         Result = false,
-                        Message = $"Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
-                        Data = "Username or Email are incorrect. Please try again.",
+                        //Message = $"Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
+                        Message = $"Username or Email are incorrect. Please try again.",
+                        Data = "Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
                     };
                 }
 
@@ -161,8 +304,8 @@ namespace vipel.Services
                     return new Reply<string>
                     {
                         Result = false,
-                        Message = $"Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
-                        Data = "password incorrect. Please try again.",
+                        Message = $"password incorrect. Please try again.",
+                        Data = "Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
                     };
                 }
 
@@ -171,7 +314,7 @@ namespace vipel.Services
                 return new Reply<string>
                 {
                     Result = true,
-                    Message = $"Login successful - {SQLServer.EnumHttp.HttpStatusOK}",
+                    Message = $"Login successful",
                     Data = token,
                 };
             }
@@ -180,8 +323,8 @@ namespace vipel.Services
                 return new Reply<string>
                 {
                     Result = false,
-                    Message = $"Server Error - {SQLServer.EnumHttp.HttpStatusInternalServerError}",
-                    Data = $"{ex}",
+                    Message = $"Server error. Please try again later.",
+                    Data = $"Server Error - {SQLServer.EnumHttp.HttpStatusInternalServerError}",
                 };
             }
             finally
@@ -219,6 +362,8 @@ namespace vipel.Services
 
                 sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
                 sql_connection.Open();
+
+
                 {
                     // Begin User and email exist ?
                     sql_command = new SqlCommand("[dbo].CheckUserAndMail", sql_connection);
@@ -257,6 +402,13 @@ namespace vipel.Services
 
                 {
                     // Begin User insert ?
+
+                    string command0 = @"SELECT COUNT(*) FROM [vipel].[dbo].[user]";
+
+                    sql_command = new SqlCommand(command0, sql_connection);
+                    int totalTableUser = (int)sql_command.ExecuteScalar();
+
+
                     string command = @"
                     INSERT INTO [vipel].[dbo].[user] ([Username], [Password], [Email], [Role])
                     VALUES (@Username, @Password, @Email, @Role)
@@ -267,7 +419,14 @@ namespace vipel.Services
                     sql_command.Parameters.AddWithValue("@Username", user.Username);
                     sql_command.Parameters.AddWithValue("@Password", Hash.PasswordGenerate(user.Password));
                     sql_command.Parameters.AddWithValue("@Email", user.Email);
-                    sql_command.Parameters.AddWithValue("@Role", (int)SQLServer.UserRole.Applicant);
+
+                    if (totalTableUser == 0)
+                    {
+                        sql_command.Parameters.AddWithValue("@Role", (int)SQLServer.UserRole.Admin);
+                    } else
+                    {
+                        sql_command.Parameters.AddWithValue("@Role", (int)SQLServer.UserRole.Applicant);
+                    }
                     
 
 
@@ -278,7 +437,7 @@ namespace vipel.Services
                     {
                         Result = true,
                         Message = $"Registration successful - {SQLServer.EnumHttp.HttpStatusOK}",
-                        Data = $"Insert row: {row}",
+                        Data = $"Registration successful.",
                     };
                     // End User insert ?
                 }

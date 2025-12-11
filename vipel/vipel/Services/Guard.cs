@@ -27,7 +27,7 @@ namespace vipel.Services
                 {
                     Result = false,
                     Message = $"Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
-                    Data = "Username and password are required. Please try again.",
+                    Data = "Name, Email and password are required. Please try again.",
                 };
             }
 
@@ -44,12 +44,23 @@ namespace vipel.Services
                 return new Reply<string>
                 {
                     Result = false,
-                    Message = $"Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
-                    Data = "Username, password and Email are required. Please try again.",
+                    Message = $"Email and password are required. Please try again.",
+                    //Data = "Username, password and Email are required. Please try again.",
+                    Data = "Bad request - {SQLServer.EnumHttp.HttpStatusBadRequest}",
                 };
             }
 
             return SQLServer.UserLogin(user);
+        }
+
+        static public Reply<List<User>> AdminGetUser()
+        {
+            return SQLServer.AdminGetUser();
+        }
+
+        static public Reply<List<Object>> UserGetPost()
+        {
+            return SQLServer.UserGetPost();
         }
 
         static public int CheckStatusCodeResult(HttpStatusCodeResult result)
@@ -61,18 +72,11 @@ namespace vipel.Services
 
             return 0;
         }
+
+        
         public Guard() 
         { 
         }
 
-        public void InitJWT()
-        {
-
-        }
-
-        public void CheckJWT()
-        {
-
-        }
     }
 }

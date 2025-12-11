@@ -433,13 +433,21 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\icon\1.png" />
+    <Content Include="App_Data\icon\2.png" />
+    <Content Include="App_Data\icon\3.png" />
+    <Content Include="App_Data\icon\4.png" />
     <Content Include="Assets\App.css" />
-    <Content Include="Assets\handlers.js" />
-    <Content Include="Assets\htmlElemnts.js" />
     <Content Include="Assets\App.js" />
-    <Content Include="Assets\route.js" />
-    <Content Include="Assets\templates.js" />
-    <Content Include="Assets\utils.js" />
+    <Content Include="Assets\img\base de datos.png" />
+    <Content Include="Assets\img\diagramin.png" />
+    <Content Include="Assets\img\favicon.ico" />
+    <Content Include="Assets\img\favicon.png" />
+    <Content Include="Assets\img\icos2.png" />
+    <Content Include="Assets\js\handlers.js" />
+    <Content Include="Assets\js\html-elements.js" />
+    <Content Include="Assets\js\templates.js" />
+    <Content Include="Assets\js\utils.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -466,6 +474,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include=".env" />
+    <Content Include="Assets\font\Montserrat-Bold.ttf" />
+    <Content Include="Assets\font\Montserrat-Regular.ttf" />
+    <Content Include="Assets\Readme.md" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -492,7 +503,7 @@
     <Content Include="Views\Vipel\Debug.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Assets\img\icon\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
