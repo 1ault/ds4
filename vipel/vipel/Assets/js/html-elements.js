@@ -40,10 +40,15 @@ htmlElements.vipel.admin.form = () => { return document.querySelector("#form"); 
 
 htmlElements.vipel.admin.form.table = () => {};
 htmlElements.vipel.admin.form.table.body = () => { return document.querySelector("#form-table-body"); };
+htmlElements.vipel.admin.form.table.form = () => { return document.querySelector("#form"); };
 // htmlElements.vipel.admin.form =  () => { return document.querySelector('form[data-name="admin-user"]'); };
 
 htmlElements.vipel.index = {};
+htmlElements.vipel.index.contentPost = () => { return document.querySelector('[data-name="main-content"]'); };
 
-htmlElements.vipel.index.avatar = () => {
-	return document.querySelector(".avatar");
-};
+htmlElements.vipel.index.form = () => { return document.querySelector("#form"); };
+
+htmlElements.vipel.index.avatar = () => {return document.querySelector(".avatar");};
+
+htmlElements.vipel.add = {};
+htmlElements.vipel.add.form = () => { return document.querySelector("#form"); };

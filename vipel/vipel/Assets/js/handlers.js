@@ -89,52 +89,38 @@ handlers.onFormSubmit = async (e) => {
 	}
 };
 
-// const form = document.querySelector("#searchForm");
-// const searchBox = document.querySelector("#searchBox");
-// const resultsList = document.querySelector("#results");
+handlers.onFormSubmitIndex = async (event) => {
+	event.preventDefault();
+	
 
-// let timerId = null;
-// const DEBOUNCE_MS = 300; // wait a bit after typing
+	console.log(event);
 
-// handlers.onInputSearch = async (e) => {
-// 	const term = queueSelector('input[data-name="search"]').value.trim();
+	if (event.submitter.id.includes("add_module")) {
 
-// 	// stop previous timer
-// 	if (timerId !== null) {
-// 		clearTimeout(timerId);
-// 	}
+		window.location.href = "/vipel/add";
+		return;
+	}
 
-// 	// if empty, clear list
-// 	if (term === "") {
-// 		resultsList.innerHTML = "";
-// 		return;
-// 	}
+	let timeout = null;
 
-// 	// small delay so it doesn’t spam fetch
-// 	timerId = setTimeout(async () => {
-// 		try {
-// 			// CHANGE THIS URL to your API
-// 			const response = await fetch(
-// 				`https://localhost:44305/api/Search?term=${encodeURIComponent(term)}`,
-// 			);
+	if (event.target.matches("input")) {
+		event.preventDefault();
 
-// 			if (!response.ok) {
-// 				console.error("HTTP error:", response.status);
-// 				return;
-// 			}
+		const input = event.target;
 
-// 			// if you return Reply<T>:
-// 			// const reply = await response.json();
-// 			// renderResults(reply.Data);
+		const val =  input.value;
 
-// 			const data = await response.json(); // simple array
-// 			renderResults(data);
-// 		} catch (err) {
-// 			console.error("Fetch error:", err);
-// 		}
-// 	}, DEBOUNCE_MS);
-// };
+		clearTimeout(timeout);
 
+        timeout = setTimeout(async () => {
+            if (!val) return;
+
+            console.log("Searching:", val);
+
+        }, 300);
+
+	}
+};
 
 handlers.adminPanel = {};
 
@@ -146,35 +132,176 @@ handlers.adminPanel.onClick = (event) => {
 
 	let moduleContainer = document.querySelector('[data-module="Module-Container"]');
 
+	console.log("test");
 	let html = "";
 	switch (moduleTypeId) {
 		case 0:
 			break;
-			html += templates.vipel.add.edit.mod.main();
-			moduleContainer.innerHTML += html;
+			html += templates.vipel.add.edit.mod.main(crypto.randomUUID());
+			moduleContainer.insertAdjacentHTML("beforeend", html);
 		case 1:
-			html += templates.vipel.add.edit.mod.section();
-			moduleContainer.innerHTML += html;
+			html = templates.vipel.add.edit.mod.section(crypto.randomUUID());
+			moduleContainer.insertAdjacentHTML("beforeend", html);
 			break;
 		case 2:
-			html += templates.vipel.add.edit.mod.img();
-			moduleContainer.innerHTML += html;
+			html += templates.vipel.add.edit.mod.img(crypto.randomUUID());
+			moduleContainer.insertAdjacentHTML("beforeend", html);
 			break;
 		case 3:
-			html += templates.vipel.add.edit.mod.compost();
-			moduleContainer.innerHTML += html;
 			break;
+			html += templates.vipel.add.edit.mod.compost(crypto.randomUUID());
+			moduleContainer.insertAdjacentHTML("beforeend", html);
 		case 4:
-			html += templates.vipel.add.edit.mod.H20();
-			moduleContainer.innerHTML += html;
 			break;
+			html += templates.vipel.add.edit.mod.H20(crypto.randomUUID());
+			moduleContainer += html;
 		default:
 			break;
 	}
-	console.log();
-	// console.log("dsafas");
 };
 
 
 
 // appendModuleRow
+handlers.onFormSubmitAdd = async (event) => {
+	event.preventDefault();
+
+	const pageEdit = document.querySelector("#PageEditor");
+	const modules = Array.from(pageEdit.querySelectorAll(".module[data-module]"));
+	const formData = new FormData();
+
+
+	const jsonModules = modules.map((module, index) => {
+
+		const read = (name) => module.querySelector(`[name="${name}"]`)?.value?.trim() ?? null;
+		const getFile = () => module.querySelector('input[type="file"][name="image"]')?.files?.[0] ?? null;
+
+
+		const order = index + 1;
+		const moduleType = module.dataset.module;
+		const moduleId = module.dataset.moduleId || (module.dataset.moduleId = crypto.randomUUID());
+
+
+		switch (moduleType) 
+		{
+			case "Main": {
+				const file = getFile() ?? null;
+
+				let attachKey = null;
+				if (file) {
+					attachKey = `image_${moduleId}`;
+					formData.append(attachKey, file);
+				}
+
+				return {
+					action: "Insert",
+					type: moduleType,
+					idName: module.dataset.moduleTypeName ?? null,
+					idType: module.dataset.moduleTypeId ?? null,
+					order: Number(order ?? 0),
+					id: moduleId,
+
+					data: {
+						title: read("title"),
+						subtitle: read("subtitle"),
+						description: read("description"),
+						image: file?{attachKey, name: file.name, type: file.type, size: file.size}: null
+					},
+				};
+			}
+
+			case "Section": {
+				return {
+					action: "Insert",
+					type: moduleType,
+					idName: module.dataset.moduleTypeName ?? null,
+					idType: module.dataset.moduleTypeId ?? null,
+					order,
+					id: moduleId,
+					data: {
+						title: read("title"),
+						description: read("description")
+					}
+				};
+			}
+
+			case "Img": {
+				const file = getFile();
+
+				let attachKey = null;
+				if (file) {
+					attachKey = `image_${moduleId}`;
+					formData.append(attachKey, file);
+				}
+
+				return {
+					action: "Insert",
+					type: moduleType,
+					idName: module.dataset.moduleTypeName ?? null,
+					idType: module.dataset.moduleTypeId ?? null,
+					order,
+					id: moduleId,
+					data: {
+						image: file
+						? { attachKey, name: file.name, type: file.type, size: file.size, OriginalName: file.name, }
+						: null
+					}
+				};
+			}
+				
+			default: {
+				return {
+					action: "Insert",
+					type: moduleType ?? "Unknown",
+					order,
+					id: moduleId,
+					data: {}
+				};
+			}
+		}
+	});
+
+	console.log(pageEdit.dataset.pageId);
+	const payload = {
+		// pageId: Number(pageEdit.dataset.pageId ?? 0),
+		// pageId: 5,
+		modules: jsonModules
+	};
+	formData.append("pageId", JSON.stringify(10));
+	formData.append("payload", JSON.stringify(payload));
+
+	const tokenLoad = localStorage.getItem("jwt");
+
+	const json = await utils.fetch.server.post.insertPost(utils.config.endPoint.access.userInsertPost, tokenLoad, formData);
+
+
+	console.log(json);
+	window.location.href = "/vipel";
+};
+
+
+handlers.adminUserPanel = async (event) =>  {
+	console.log(event);
+	if (!event.target.matches("select[data-key='role']")) return;
+	
+	const tr = event.target.closest("tr");
+	const tds = tr.querySelectorAll("td");
+
+
+	const rowData = {
+		id: tds[0].textContent,
+		username: tds[1].textContent,
+		email: tds[2].textContent,
+		role: event.target.value
+	};
+
+ 	console.log(rowData);
+
+	const tokenLoad = localStorage.getItem("jwt");
+
+	utils.fetch.server.post.updatePut(
+		utils.config.endPoint.access.adminSetRole, 
+		tokenLoad, 
+		rowData
+	);
+};

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography.Xml;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -18,6 +21,7 @@ using vipel.Models.WS;
 using vipel.Models.WS.Reply;
 using vipel.Services;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static vipel.Services.SQLServer;
 
 namespace vipel.Controllers
 {
@@ -118,26 +122,151 @@ namespace vipel.Controllers
         //    return new string[] { "value1", "value2" };
         //}
 
-        // GET: api/Access/Get/5
-        //[HttpGet]
+
+        //// POST: api/Access/Post
+        //public void Post([FromBody] string value)
+        //{
+        //}
+
+
+
+        //// DELETE: api/Access/5
+        //public void Delete(int id)
+        //{
+        //}
+
+        //    {
+        //// GET: api/Default
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
+
+        //// GET: api/Default/5
         //public string Get(int id)
         //{
         //    return "value";
         //}
 
-        // POST: api/Access/Post
-        public void Post([FromBody] string value)
+        //// POST: api/Default
+        //public void Post([FromBody] string value)
+        //{
+        //}
+
+        //// PUT: api/Default/5
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        //// DELETE: api/Default/5
+        //public void Delete(int id)
+        //{
+        //}
+
+        //[System.Web.Http.Authorize]
+        [System.Web.Http.HttpGet]
+        public HttpResponseMessage GetImage(string id)
         {
+            var hash = id;
+            System.Diagnostics.Debug.WriteLine($"{hash}");
+            var folder = HttpContext.Current.Server.MapPath("~/App_Data/uploads");
+            var matches = Directory.GetFiles(folder, hash + ".*");
+
+            if (matches.Length == 0)
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            var path = matches[0];
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+
+            var contentType =
+                ext == ".png" ? "image/png" :
+                (ext == ".jpg" || ext == ".jpeg") ? "image/jpeg" :
+                ext == ".gif" ? "image/gif" :
+                ext == ".webp" ? "image/webp" :
+                "application/octet-stream";
+
+            var result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new StreamContent(File.OpenRead(path));
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+            return result;
         }
 
-        // PUT: api/Access/put/5
-        public void Put(int id, [FromBody] string value)
+        [System.Web.Http.Authorize]
+        [System.Web.Http.HttpPost]
+        public async Task<Reply<string>> userInsertPost()
         {
-        }
+            var identity = (ClaimsIdentity)User.Identity;
+            var userRole = identity.FindFirst(ClaimTypes.Role)?.Value;
 
-        // DELETE: api/Access/5
-        public void Delete(int id)
-        {
+            if (!int.TryParse(userRole, out var role) || role < 1)
+                return new Reply<string> { Result = false, Message = "Unauthorized", Data = null };
+
+            if (!Request.Content.IsMimeMultipartContent())
+                return new Reply<string> { Result = false, Message = "Expected multipart/form-data", Data = null };
+
+            var uploadsFolder = HttpContext.Current.Server.MapPath("~/App_Data/uploads");
+            Directory.CreateDirectory(uploadsFolder);
+
+            var provider = new MultipartFormDataStreamProvider(uploadsFolder);
+            await Request.Content.ReadAsMultipartAsync(provider);
+
+            //var pageIdStr = provider.FormData["pageId"];
+            //if (string.IsNullOrWhiteSpace(pageIdStr) || !int.TryParse(pageIdStr, out var pageId) || pageId < 1)
+            //    return new Reply<string> { Result = false, Message = "Missing/invalid pageId", Data = null };
+
+            var payloadJson = provider.FormData["payload"];
+            if (string.IsNullOrWhiteSpace(payloadJson))
+                return new Reply<string> { Result = false, Message = "Missing payload", Data = null };
+
+            PagePayload payload;
+            try { payload = JsonConvert.DeserializeObject<PagePayload>(payloadJson); }
+            catch (Exception ex)
+            {
+                return new Reply<string> { Result = false, Message = "Invalid payload JSON: " + ex.Message, Data = null };
+            }
+
+            foreach (var file in provider.FileData)
+            {
+                var attachKey = file.Headers.ContentDisposition.Name?.Trim('"');
+                var originalName = (file.Headers.ContentDisposition.FileName ?? "upload").Trim('"');
+                var contentType = file.Headers.ContentType?.MediaType ?? "application/octet-stream";
+                var tempPath = file.LocalFileName;
+
+                if (!contentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+                {
+                    File.Delete(tempPath);
+                    continue;
+                }
+
+                var sha256 = Hash.ComputeSha256(tempPath);
+
+                var extension = Path.GetExtension(originalName);
+                if (string.IsNullOrWhiteSpace(extension)) extension = ".bin";
+                extension = extension.ToLowerInvariant();
+
+                var finalName = sha256 + extension;
+                var finalPath = Path.Combine(uploadsFolder, finalName);
+
+                if (File.Exists(finalPath)) File.Delete(tempPath);
+                else File.Move(tempPath, finalPath);
+
+                var privateUrl = "/access/GetImage/" + sha256;
+
+                var module = payload.Modules.FirstOrDefault(m =>
+                    m.Data?.Image != null && m.Data.Image.AttachKey == attachKey);
+
+                if (module != null)
+                {
+                    module.Data.Image.OriginalName = originalName;
+                    module.Data.Image.type = extension;
+                    module.Data.Image.Url = privateUrl;
+                    module.Data.Image.Hash = sha256;
+
+                }
+            }
+
+            int pageIdOrigin = await SQLServer.PageCreate();
+            return await Guard.UserInsertPost(pageIdOrigin, payload);
         }
 
         [System.Web.Http.Authorize]
@@ -166,7 +295,7 @@ namespace vipel.Controllers
         }
 
         [System.Web.Http.Authorize]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpGet]
         public Reply<List<Object>> UserGetPost(int id)
         {
             var identity = (ClaimsIdentity)User.Identity;
@@ -177,7 +306,7 @@ namespace vipel.Controllers
 
             if (Convert.ToInt32(userRole) >= 1)
             {
-                return Guard.UserGetPost();
+                return Guard.UserGetPostID(id);
             }
 
             return new Reply<List<object>>
@@ -215,6 +344,33 @@ namespace vipel.Controllers
                 Data = new List<User>(),
             };
         }
+
+
+        // PUT: api/Access/put/5
+        [System.Web.Http.Authorize]
+        [System.Web.Http.HttpPut]
+        public Reply<string> AdminSetRole([FromBody] User value)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            var userRole = identity.FindFirst(ClaimTypes.Role)?.Value;
+
+            System.Diagnostics.Debug.WriteLine($"Set Roles = {value.ID}");
+            System.Diagnostics.Debug.WriteLine($"Set Rolesssssss = {value.Role}");
+
+            if (userRole == "100")
+            {
+                return Guard.AdminSetRole(value);
+            }
+
+            return new Reply<string>
+            {
+                Result = false,
+                Message = $"Error role.",
+                Data = "Error",
+            };
+        }
+
 
 
         [System.Web.Http.Authorize]

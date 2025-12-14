@@ -2,8 +2,10 @@
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace vipel.Services
@@ -58,5 +60,36 @@ namespace vipel.Services
             }
             return diff == 0;
         }
+
+        public static string ComputeSha256(string filePath)
+        {
+            FileStream stream = null;
+            SHA256 sha256 = null;
+
+            try
+            {
+                stream = File.OpenRead(filePath);
+                sha256 = SHA256.Create();
+
+                byte[] hashBytes = sha256.ComputeHash(stream);
+
+                var sb = new StringBuilder(hashBytes.Length * 2);
+                foreach (var b in hashBytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+            finally
+            {
+                if (sha256 != null)
+                    sha256.Dispose();
+
+                if (stream != null)
+                    stream.Dispose();
+            }
+        }
+
     }
 }

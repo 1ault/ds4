@@ -1,7 +1,11 @@
-﻿using Sprache;
+﻿using Azure;
+using Sprache;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Results;
 using System.Web.Mvc;
@@ -34,7 +38,14 @@ namespace vipel.Services
             return SQLServer.UserInsert(user);
         }
 
-        static public Reply<string> UserLogin(User user)
+
+        
+         static public Reply<string> AdminSetRole(User user)
+        {
+            return SQLServer.AdminSetRole(user);
+        }
+
+            static public Reply<string> UserLogin(User user)
         {
 
             //if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password))
@@ -63,6 +74,24 @@ namespace vipel.Services
             return SQLServer.UserGetPost();
         }
 
+        static public Reply<List<Object>> UserGetPostID(int id)
+        {
+            return SQLServer.UserGetPostID(id);
+        }
+
+        
+
+        public static Task<Reply<string>> UserInsertPost(int pageId, PagePayload payload)
+        {
+            if (pageId < 1)
+                return Task.FromResult(new Reply<string> { Result = false, Message = "Invalid PageID", Data = null });
+
+            if (payload?.Modules == null || payload.Modules.Count == 0)
+                return Task.FromResult(new Reply<string> { Result = false, Message = "No modules to insert", Data = null });
+
+            return SQLServer.UserInsertPost(pageId, payload);
+        }
+
         static public int CheckStatusCodeResult(HttpStatusCodeResult result)
         {
             if (result.StatusCode >= 400)
@@ -77,6 +106,8 @@ namespace vipel.Services
         public Guard() 
         { 
         }
+
+        
 
     }
 }

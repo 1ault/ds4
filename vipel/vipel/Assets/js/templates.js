@@ -64,23 +64,37 @@ templates.vipel.singUp = () =>  `
 </main>
 `;
 
+templates.initVipelPost = (id) => `
+<div 
+data-page-id="${id}"
+data-module="Module-Container" 
+class="margin-1rem flex flex-column flex-gap-0-5rem">
+
+</div>
+`;
 templates.initVipel = () =>  `
-<div class="flex flex-justify-center">
-	<form action="" class="bgtest">
-		<input data-name="search" type="search" autocomplete="off" name="search" id="search" placeholder="Que planta buscas?">
-		<button type="submit">
-			<img src="/assets/img/icon/1.png" alt="Search icon" class="icon" >
+<div class="flex flex-justify-center flex-align-center">
+	<form id="form" action="" class="flex-gap-0-5rem width-100percent flex flex-justify-center flex-align-center"">
+		<div class="flex-gap-0-3rem  flex flex-justify-center flex-align-center">
+		<input data-name="search" type="search" autocomplete="off" name="search" id="search" placeholder="Search..."><button type="submit" class="font-weight-bold padding-y-0-75rem padding-x-0-80rem">
+			<img src="/assets/img/icon/1.png" alt="Search icon" class="icon">
 		</button>
+		</div>
+
+		<button type="submit"  id="add_module" class="font-weight-bold padding-y-0-75rem padding-x-0-80rem">➕ Add</button>
 	</form>
 </div>
 
-<main data-name="main-content" class="tmp-grid">
+<main data-name="main-content" class="tmp-grid grid-place-items-center">
 </main>
 
 <div id="scrollSpacer"></div>
 <footer>
 </footer>
 `;
+
+
+
 
 templates.vipel.page = (imageBase64, title) => `
 <a>
@@ -97,7 +111,7 @@ templates.vipel.admin = () => {
 	<form 
 	id="form"
 	action=""
-	class="container background-color-a3dc7e flex flex-justify-center">
+	class="container background-color-a3dc7e flex flex-justify-center font-weight-bold">
 		<table class="data-table">
 			<thead>
 		    	<tr>
@@ -121,14 +135,14 @@ templates.vipel.admin.addUser = (id, username, email, role) => {
 	<td>${username}</td>
 	<td>${email}</td>
 	<td>
-		<select  id="roles" required>
+		<select  data-key="role" required>
 			<option value="" disabled selected>...</option>
 			<option value="-2" ${role == -2 ? "selected" : ""}>Banned</option>
 			<option value="-1" ${role == -1 ? "selected" : ""}>Inactive</option>
 			<option value="0" ${role == 0 ? "selected" : ""}>Applicant</option>
 			<option value="1" ${role == 1 ? "selected" : ""}>Invited</option>
 			<option value="2" ${role == 2 ? "selected" : ""}>User</option>
-			<option value="10" ${role == 10 ? "selected" : ""}>Moderator</option>
+			<option value="99" ${role == 99 ? "selected" : ""}>Moderator</option>
 			<option value="100" ${role == 100 ? "selected" : ""}>Admin</option>
 		</select>
 	</td>
@@ -141,11 +155,33 @@ templates.vipel.admin.user = (json_user) => {};
 
 templates.vipel.index = {};
 
-templates.vipel.index.header = () => `
-<header class="flex flex-justify-space-between">
+templates.vipel.index.postDefaultImg = (id, data_title) => 
+`
+<a href="/vipel/post/${id}" class="link-div">
+  <div class="box card width-100percent">
+	<img data-role="image-preview" class="image-preview" src="/assets/img/placeholder.png" alt="placeholder">
+    <span class="padding-1rem font-size-1rem display-block width-100percent font-size-1rem text-align-center font-weight-bold">${data_title}</span>
+	</div>
+</a>
+`; 
+
+templates.vipel.index.post = (id, data_title, img, img_alt) => 
+`
+<a href="/vipel/post/${id}" class="link-div">
+  <div class="box card width-100percent">
+	<img data-role="image-preview" class="image-preview" src="${img}" alt="${img_alt}">
+    <span class="padding-1rem font-size-1rem display-block width-100percent font-size-1rem text-align-center font-weight-bold">${data_title}</span>
+  </div>
+</a>
+`;
+
+
+templates.vipel.index.header = (pathImage) => `
+<header class="flex flex-justify-space-between padding-x-0-50rem">
 	<a href="/vipel"><img class="" src="/assets/img/icon/logo1.png" alt="logo"></a>
-    <a href="/vipel/admin"><img src="" class="avatar" alt="avatar" srcset=""></a>
+    <a href="/vipel/admin"><img src="${pathImage}" class="avatar" alt="avatar" srcset=""></a>
 </header>
+
 `;
 
 templates.vipel.add = (title) => `
@@ -184,34 +220,46 @@ templates.vipel.add = (title) => `
 `;
 
 
-templates.vipel.add.edit = () => `
-<div data-module="Module-Container" class="margin-1rem flex flex-column flex-gap-0-5rem">
+templates.vipel.add.edit = (randomUUID) => `
+<div 
+id="PageEditor" 
+data-page-id="${randomUUID}"
+data-module="Module-Container" 
+class="margin-1rem flex flex-column flex-gap-0-5rem">
 
 </div>
 `;
 
 templates.vipel.add.edit.mod = {};
-templates.vipel.add.edit.mod.main = () => `
-<div data-module="Main" 
-	class="background-color-a3dc7e flex flex-justify-center flex-grow-1"
+templates.vipel.add.edit.mod.post = {};
+
+
+templates.vipel.add.edit.mod.post.main = (id, order) => `
+<div 
+	data-module="Main"
+	data-module-type-name="main"
+	data-module-type-id="1" 
+	data-module-order="${order}" 
+	data-module-id="${id}"
+	class="module background-color-a3dc7e flex flex-justify-center flex-grow-1"
 >
 	<div class="width-fit-content width-100percent padding-1rem">
 		<div class="padding-y-0-75rem image-block flex flex-column flex-justify-center flex-align-center flex-grow-1">
-			<img id="ImagePreview" class="image-preview" >
-			<input type="file" id="ImageInput" class="width-100percent ImageInput" accept="image/*">
+			<img data-role="image-preview" class="image-preview" src="/assets/img/placeholder.png" alt="placeholder">
+			<input name="image" type="file" class="width-100percent ImageInput" accept="image/*">
 		</div>
 
 		<div class="font-size-2rem">
 			<label class="width-100percent">
 				Title:
-				<input class="width-100percent font-size-1-5rem" type="text" id="Title" placeholder="Enter title">
+				<input name="title" class="width-100percent font-size-1-5rem" type="text" placeholder="Enter title">
 			</label>
 		</div>
 		
 		<div class="font-size-2rem">
 			<label>
 				Subtitle:
-				<input class="font-size-1-5rem width-100percent" type="text" id="Subtitle" placeholder="Enter subtitle">
+				<input name="subtitle" class="font-size-1-5rem width-100percent" type="text" placeholder="Enter subtitle">
 			</label>
 		</div>
 
@@ -219,62 +267,132 @@ templates.vipel.add.edit.mod.main = () => `
 			<div>
 				<label for="Description">Description:</label>
 			</div>
-			<textarea class="font-size-2rem width-100percent auto-grow" id="Description" placeholder="Description..."></textarea>
+			<textarea name="description" class="font-size-2rem width-100percent auto-grow" placeholder="Description..."></textarea>
 		</div>
 	</div>
 </div>
 `;
 
+templates.vipel.add.edit.mod.main = (randomUUID) => `
+<div 
+	data-module="Main"
+	data-module-type-name="main"
+	data-module-type-id="1" 
+	data-module-order="0" 
+	data-module-id="${randomUUID}"
+	class="module background-color-a3dc7e flex flex-justify-center flex-grow-1"
+>
+	<div class="width-fit-content width-100percent padding-1rem">
+		<div class="padding-y-0-75rem image-block flex flex-column flex-justify-center flex-align-center flex-grow-1">
+			<img data-role="image-preview" class="image-preview" src="/assets/img/placeholder.png" alt="placeholder">
+			<input name="image" type="file" class="width-100percent ImageInput" accept="image/*">
+		</div>
 
-templates.vipel.add.edit.mod.section = () => `
-<div data-module="section" class="background-color-a3dc7e flex flex-justify-center flex-grow-1">
-	<div>
-		<div>
-			<label>
+		<div class="font-size-2rem">
+			<label class="width-100percent">
 				Title:
-				<input type="text" id="movieTitle" placeholder="Enter movie title">
+				<input name="title" class="width-100percent font-size-1-5rem" type="text" placeholder="Enter title">
 			</label>
 		</div>
 		
-		<div>
+		<div class="font-size-2rem">
+			<label>
+				Subtitle:
+				<input name="subtitle" class="font-size-1-5rem width-100percent" type="text" placeholder="Enter subtitle">
+			</label>
+		</div>
+
+		<div class="font-size-2rem">
 			<div>
 				<label for="Description">Description:</label>
 			</div>
-			<textarea class="width-100percent" id="Description" placeholder="Description..."></textarea>
+			<textarea name="description" class="font-size-2rem width-100percent auto-grow" placeholder="Description..."></textarea>
 		</div>
 	</div>
 </div>
 `;
 
-templates.vipel.add.edit.mod.img = () => `
-<div class="image-block background-color-a3dc7e flex flex-justify-center flex-column flex-align-center flex-grow-1">
-	<img class="image-preview" style="width:200px; display:none;">
-	<input type="file" class="ImageInput" accept="image/*">
+
+templates.vipel.add.edit.mod.section = (randomUUID) => `
+<div
+	data-module="Section"
+	data-module-type-name="section"
+	data-module-type-id="2" 
+	data-module-order="0" 
+	data-module-id="${randomUUID}"
+  class="module background-color-a3dc7e flex flex-justify-center flex-grow-1"
+>
+  <div class="width-fit-content width-100percent padding-1rem">
+
+    <div class="font-size-2rem">
+      <label class="width-100percent">
+        Title:
+        <input
+          name="title"
+          class="width-100percent font-size-1-5rem"
+          type="text"
+          placeholder="Enter title"
+        >
+      </label>
+    </div>
+
+    <div class="font-size-2rem">
+      <label>Description:</label>
+      <textarea
+        name="description"
+        class="font-size-2rem width-100percent auto-grow"
+        placeholder="Description..."
+      ></textarea>
+    </div>
+
+  </div>
+</div>
+`;
+
+templates.vipel.add.edit.mod.img = (randomUUID) => `
+<div
+	data-module="Img"
+	data-module-type-name="img"
+	data-module-type-id="3" 
+	data-module-order="0" 
+	data-module-id="${randomUUID}"
+	class="module background-color-a3dc7e flex flex-justify-center flex-grow-1"
+>
+	<div class="width-fit-content width-100percent padding-1rem">
+		<div class="padding-y-0-75rem image-block flex flex-column flex-justify-center flex-align-center flex-grow-1">
+			<img class="image-preview" src="/assets/img/placeholder.png" alt="placeholder">
+			<input name="image" type="file" class="width-100percent ImageInput" accept="image/*">
+		</div>
+
+	</div>
 </div>
 `;
 
 
 
 templates.vipel.add.edit.gui = () => `
-<div class="admin-toolbar flex flex-justify-center">
+<form 
+id="form"
+action="">
+<div class="admin-toolbar flex flex-justify-center flex-gap-1rem ">
 	<div>
-		<button id="insert_module">Insert</button>
+		<button type="submit" id="insert_module" class="font-weight-bold padding-y-0-75rem padding-x-0-80rem">💾 Insert</button>
 	</div>
 
-	<div>
-		<label for="module_type">Add component:</label>
-		<select  id="module_type" required>
+	<div class="flex flex-justify-center flex-align-center text-align-center">
+		<label for="module_type" class="font-weight-bold">Add component:</label>
+		<select id="module_type">
 			<option value="" disabled selected>...</option>
 			<option value="0" disabled>Main</option>
 			<option value="1">Section</option>
 			<option value="2">IMG</option>
-			<option value="3">Compost</option>
-			<option value="4">H2O</option>
+			<option value="3" disabled>Compost</option>
+			<option value="4" disabled>H2O</option>
 		</select>
-		<button id="add_module">Add</button>
+		<button type="submit" id="add_module" class="font-weight-bold padding-y-0-75rem padding-x-0-80rem">➕ Add</button>
 	</div>
 </div>
-
+</form>
 `
 
 templates.vipel.add.edit.mod.compost = () => `

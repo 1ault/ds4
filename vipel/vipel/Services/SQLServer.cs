@@ -1,18 +1,24 @@
 ﻿using Microsoft.Ajax.Utilities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 using Sprache;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+//using System.Data.SqlClient;
+using System.Drawing;
+
 
 //using System.Data;
 //using System.Data.SqlClient;
 
 //using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Management;
 using System.Web.Mvc;
@@ -90,6 +96,251 @@ namespace vipel.Services
         //}
 
 
+
+
+
+        public static Reply<string> AdminSetRole(User user)
+        {
+            SqlConnection sql_connection = null;
+            SqlCommand sql_command = null;
+            SqlDataReader sql_data_reader = null;
+            //User db_user = null;
+
+            try
+            {
+                sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
+                sql_command = new SqlCommand("[dbo].[AlterUserRol]", sql_connection);
+                sql_command.CommandType = CommandType.StoredProcedure;
+
+                sql_command.Parameters.Add("@ID", SqlDbType.Int).Value = user.ID;
+                sql_command.Parameters.Add("@Username", SqlDbType.VarChar, 256).Value = user.Username;
+                sql_command.Parameters.Add("@Email", SqlDbType.VarChar, 256).Value = user.Email;
+                //sql_command.Parameters.Add("@Role", SqlDbType.Int).Value = user.Role;
+                sql_command.Parameters.Add("@UpdateRole", SqlDbType.Int).Value = user.Role;
+
+                sql_connection.Open();
+
+                string resultMessage = (string)sql_command.ExecuteScalar();
+
+                return new Reply<string>
+                {
+                    Result = true,
+                    Message = $"Ok",
+                    Data = resultMessage,
+                };
+            }
+            catch (SqlException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"SQL ERROR {ex.Number}: {ex.Message}");
+                return new Reply<string>
+                {
+                    Result = false,
+                    Message = $"Server error. Please try again later.",
+                    Data = $"Server Error - {SQLServer.EnumHttp.HttpStatusInternalServerError}",
+                };
+            }
+            finally
+            {
+                if (sql_data_reader != null)
+                {
+                    sql_data_reader.Close();
+                    sql_data_reader.Dispose();
+                }
+
+                if (sql_command != null)
+                {
+                    sql_command.Dispose();
+                }
+
+                if (sql_connection != null)
+                {
+                    sql_connection.Close();
+                    sql_connection.Dispose();
+                }
+            }
+        }
+
+        public static async Task<int> PageCreate()
+        {
+            SqlConnection sql_connection = null;
+            SqlCommand sql_command = null;
+
+            try
+            {
+                sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
+                await sql_connection.OpenAsync();
+
+                sql_command = new SqlCommand("[dbo].[PageCreate]", sql_connection);
+                sql_command.CommandType = CommandType.StoredProcedure;
+
+                var obj = await sql_command.ExecuteScalarAsync();
+                return Convert.ToInt32(obj);
+            }
+            finally
+            {
+                if (sql_command != null) sql_command.Dispose();
+                if (sql_connection != null) sql_connection.Dispose();
+            }
+        }
+
+
+        public static async Task<Reply<string>> UserInsertPost(int pageId, PagePayload payload)
+        {
+            SqlConnection sql_connection = null;
+            SqlCommand sql_command = null;
+            SqlDataReader sql_data_reader = null;
+            SqlTransaction sql_transaction = null;
+
+            try
+            {
+                sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
+                //sql_connection.Open();
+                await sql_connection.OpenAsync();
+
+                sql_transaction = sql_connection.BeginTransaction();
+
+                foreach (var mod in payload.Modules)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        JsonConvert.SerializeObject(mod, Formatting.Indented)
+                    );
+                    int moduleTypeId = mod.IdType;
+                    //int moduleTypeId = mod.ModuleTypeID;
+                    int moduleOrder = mod.Order;
+                    string moduleJson = JsonConvert.SerializeObject(mod);
+
+                    var response = await CallUserInsertPost(sql_connection, sql_transaction, pageId, moduleTypeId, moduleOrder, moduleJson);
+                    if (!response.ok)
+                    {
+                        sql_transaction.Rollback();
+                        return new Reply<string> { Result = false, Message = response.message, Data = null };
+                    }
+                }
+
+                sql_transaction.Commit();
+                return new Reply<string> { Result = true, Message = "Inserted modules", Data = pageId.ToString() };
+            }
+            catch (Exception ex)
+            {
+                if (sql_transaction != null) { try { sql_transaction.Rollback(); } catch { } }
+                return new Reply<string> { Result = false, Message = ex.Message, Data = null };
+            }
+            finally
+            {
+                if (sql_data_reader != null) { sql_data_reader.Close(); }
+
+                if (sql_command != null) { sql_command.Dispose(); }
+
+                if (sql_connection != null) { sql_connection.Close(); }
+
+                if (sql_transaction != null) sql_transaction.Dispose();
+            }
+        }
+
+
+        private static async Task<(bool ok, string message)> CallUserInsertPost(
+        SqlConnection sql_connection, 
+        SqlTransaction sql_transaction,
+        int pageId, 
+        int moduleTypeId, 
+        int moduleOrder, 
+        string moduleJson)
+        {
+            SqlCommand sql_command = null;
+            SqlDataReader sql_data_reader = null;
+
+            try
+            {
+                sql_command = new SqlCommand("[dbo].[UserInsertPost]", sql_connection, sql_transaction);
+                sql_command.CommandType = CommandType.StoredProcedure;
+
+                sql_command.Parameters.Add("@PageID", SqlDbType.Int).Value = pageId;
+                sql_command.Parameters.Add("@ModuleTypeID", SqlDbType.Int).Value = moduleTypeId;
+                sql_command.Parameters.Add("@ModuleOrder", SqlDbType.Int).Value = moduleOrder;
+                sql_command.Parameters.Add("@ModuleJson", SqlDbType.NVarChar).Value = moduleJson;
+
+                sql_data_reader = await sql_command.ExecuteReaderAsync();
+
+                if (await sql_data_reader.ReadAsync())
+                {
+                    var msg = (sql_data_reader["Message"] ?? "").ToString();
+                    var ok = !msg.StartsWith("Insertion failed", StringComparison.OrdinalIgnoreCase);
+                    return (ok, msg);
+                }
+
+                return (false, "Stored procedure returned no rows");
+            }
+            finally
+            {
+                if (sql_data_reader != null) sql_data_reader.Dispose();
+                if (sql_command != null) sql_command.Dispose();
+            }
+        }
+
+        public static Reply<List<object>> UserGetPostID(int id)
+        {
+            SqlConnection sql_connection = null;
+            SqlCommand sql_command = null;
+            SqlDataReader sql_data_reader = null;
+            User db_user = null;
+
+            List<object> list = new List<object>();
+
+            try
+            {
+                sql_connection = new SqlConnection(Env.GetDBConnectionVipel());
+                sql_connection.Open();
+
+                sql_command = new SqlCommand("[dbo].[UserGetPostId]", sql_connection);
+                sql_command.CommandType = CommandType.StoredProcedure;
+
+                sql_command.Parameters.AddWithValue("@ID", id);
+
+                sql_data_reader = sql_command.ExecuteReader();
+
+
+                while (sql_data_reader.Read())
+                {
+                    object item = new
+                    {
+                        PageID = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("PageID")),
+                        ModuleID = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("ModuleID")),
+                        ModuleTypeID = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("ModuleTypeID")),
+                        ModuleOrder = sql_data_reader.GetInt32(sql_data_reader.GetOrdinal("ModuleOrder")),
+                        ModuleJson = sql_data_reader.GetString(sql_data_reader.GetOrdinal("ModuleJson"))
+                    };
+
+                    list.Add(item);
+                }
+
+
+                return new Reply<List<object>>
+                {
+                    Result = true,
+                    Message = $"Post Ok ID",
+                    Data = list,
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new Reply<List<object>>
+                {
+                    Result = false,
+                    Message = $"Server error. Please try again later.",
+                    Data = new List<object>(),
+                };
+            }
+            finally
+            {
+                if (sql_data_reader != null) { sql_data_reader.Close(); }
+
+                if (sql_command != null) { sql_command.Dispose(); }
+
+                if (sql_connection != null) { sql_connection.Close(); sql_connection.Dispose(); }
+            }
+        }
+
         public static Reply<List<object>> UserGetPost()
         {
             SqlConnection sql_connection = null;
@@ -130,7 +381,7 @@ namespace vipel.Services
                 {
                     Result = true,
                     Message = $"Post Ok",
-                    Data = new List<object>(),
+                    Data = list,
                 };
 
             }
@@ -149,7 +400,7 @@ namespace vipel.Services
 
                 if (sql_command != null) { sql_command.Dispose(); }
 
-                if (sql_connection != null) { sql_connection.Close(); }
+                if (sql_connection != null) { sql_connection.Close(); sql_connection.Dispose(); }
             }
         }
 

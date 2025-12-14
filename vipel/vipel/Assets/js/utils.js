@@ -20,7 +20,7 @@ utils.struct.Roles = {
 	Applicant: 0,
 	Invited: 1,
 	User: 2,
-	Moderator: 10,
+	Moderator: 99,
 	Admin: 100,
 };
 
@@ -37,30 +37,93 @@ utils.config.endPoint.access = {
 	
 	adminGetUser: `${window.appConfig.endPoint.access}/AdminGetUser`,
 	userGetPost: `${window.appConfig.endPoint.access}/UserGetPost`,
+
+	userInsertPost: `${window.appConfig.endPoint.access}/userInsertPost`,
+	adminSetRole: `${window.appConfig.endPoint.access}/AdminSetRole`,
+
+	getImage: `${window.appConfig.endPoint.access}/GetImage`,
+	
 };
 
 
 utils.fetch = {};
 utils.fetch.server = {};
 
+
 utils.fetch.server.assets = {};
 utils.fetch.server.assets.getAvatar = async (token) => {
-	const response = await fetch(utils.config.endPoint.access.userGetAvatar, {
-		headers: {
-			Authorization: "Bearer " + token,
-		},
-	});
+	try {
+		const response = await fetch(utils.config.endPoint.access.userGetAvatar, {
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		});
+	
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
+
+		const data = await response.json();
+		return data;
+	} catch (err) {
+		console.error("Fetch error:", err);
+	}
+};
+
+utils.fetch.server.post = {};
+
+utils.fetch.server.post.updatePut = async (url, token, body) => {
+	try {
+		const response = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Authorization": `Bearer ${token}`,
+				"Content-Type": "application/json; charset=utf-8",
+        		"Accept": "application/json"
+			},
+			body: JSON.stringify({
+				ID: body.id,
+				Username: body.username,
+				Email: body.email,
+				Role: body.role,
+			}),
+		});
 
 	if (!response.ok) {
 		throw new Error("Error: " + response.status);
 	}
 
-	const data = await response.json();
+	const json = await response.json();
 
-	return data;
+	return json;
+	} catch (err) {
+		console.error("Fetch error:", err);
+	}
 };
 
-utils.fetch.server.post = {};
+utils.fetch.server.post.insertPost = async (url, token, body) => {
+	
+	let json = null;
+	try {
+		const response = await fetch(`${url}`, {
+			method: "POST",
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+			body: body
+		});
+
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
+
+		json = await response.json();
+	} catch (err) {
+		console.error("Fetch error:", err);
+	}
+
+	return json;
+};
 
 utils.fetch.server.post.tokenAndVal = async (url, val) => {
 	try {
@@ -87,7 +150,7 @@ utils.fetch.server.post.tokenAndVal = async (url, val) => {
 };
 
 utils.fetch.server.token = async (url, token, method) => {
-		try {
+	try {
 		const response = await fetch(`${url}`, {
 			method: `${method}`,
 			headers: {
@@ -108,6 +171,55 @@ utils.fetch.server.token = async (url, token, method) => {
 }
 
 utils.fetch.server.get = {};
+
+utils.fetch.server.get.image = async (token, hash) =>
+{
+	try {
+		// console.log(`${utils.config.endPoint.access.getImage}/${hash}`);
+		
+		const response = await fetch(`${utils.config.endPoint.access.getImage}/${hash}`, {
+			method: "GET",
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+			// body: JSON.stringify({
+			// 	hash: hash,
+			// }),
+		});
+
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
+		
+		const blob = await response.blob();
+
+		return URL.createObjectURL(blob); 
+	} catch (err) {
+		console.error("Fetch error:", err);
+	}
+};
+
+utils.fetch.server.get.post = {};
+utils.fetch.server.get.post.id = async (url, token, id) => {
+	try {
+		const response = await fetch(`${url}/${id}`, {
+			method: "GET",
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
+		
+		const json = await response.json();
+
+		return json;
+	} catch (err) {
+		console.error("Fetch error:", err);
+	}
+};
 
 utils.fetch.server.get.token = async (url, token) => {
 	try {
@@ -203,14 +315,50 @@ utils.router.vipel.singUp = (token) => {
 	return utils.struct.Result.ERR;
 };
 
-utils.router.vipel.unknown = () => {
+utils.router.vipel.unknown = (token) => {
+	if (token != null && utils.token.jwt.checkExpired(token)) {
+		localStorage.removeItem("jwt");
+		location.href = "/login";
+	}
+
+	if (token == null && !window.location.pathname === "/login" || token == null && !window.location.pathname === "/signup") {
+		location.href = "/login";
+	}
+
 	utils.router.replace.state("/404");
 	return true;
 }
 
 utils.router.vipel.index = async (token) => {
-	if (token) {		
-		htmlElements.body.innerHTML = templates.vipel.index.header();
+	if (token) {
+		const userRole = await utils.token.jwt.checkRole(token);
+
+		switch (Number(userRole.Role)) {
+			case 100: {
+				htmlElements.body.innerHTML = templates.vipel.index.header("/Assets/img/icon/100.png");
+				break;
+			}
+			case 99: {
+				htmlElements.body.innerHTML = templates.vipel.index.header("/Assets/img/icon/99.png");
+				break;
+			}
+			case 1: {
+				htmlElements.body.innerHTML = templates.vipel.index.header("/Assets/img/icon/1.png");
+				break;
+			}
+			case 2: {
+				htmlElements.body.innerHTML = templates.vipel.index.header("/Assets/img/icon/2.png");
+				break;
+			}
+			case 3: {
+				htmlElements.body.innerHTML = templates.vipel.index.header("/Assets/img/icon/3.png");
+				break;
+			}
+			default: {
+				htmlElements.body.innerHTML = templates.vipel.index.header("/Assets/img/icon/0.png");
+				break;
+			}
+		}
 	}
 
 	if (token && window.location.pathname === "/vipel") {
@@ -234,15 +382,54 @@ utils.router.vipel.index = async (token) => {
 		// 	img_avatar.Data.ContentType,
 		// 	img_avatar.Data.Image,
 		// );
+		htmlElements.body.innerHTML += templates.initVipel();
 
-		
-	// 		return await utils.fetch.server.post.tokenAndVal(
+		htmlElements.vipel.index.form().addEventListener("submit", handlers.onFormSubmitIndex)
+		const input = document.getElementById("search");
+
+		const contentPost = htmlElements.vipel.index.contentPost();
+
+		console.log(input);
+	
+		input.addEventListener("input", handlers.onFormSubmitIndex);
+		// 		return await utils.fetch.server.post.tokenAndVal(
 	// 	utils.config.endPoint.access.userGetPost,
 	// 	token,
 	// 	id,
 	// );
 		
-		console.log(await utils.fetch.server.get.token(utils.config.endPoint.access.userGetPost, token));
+		const postData = await utils.fetch.server.get.token(utils.config.endPoint.access.userGetPost, token);
+		
+		console.log("------------------------------------------");
+		console.log(postData);
+		for (const post of postData.Data) {
+		const moduleData = JSON.parse(post.ModuleJson);
+
+		const postOBJ = {
+			pageId: post.PageID,
+			moduleId: post.ModuleID,
+			moduleType: post.ModuleTypeID,
+			data: {
+			order: moduleData?.Order ?? null,
+			idType: moduleData?.IdType ?? null,
+			title: moduleData?.Data?.title ?? null,
+			image: moduleData?.Data?.image ?? null,
+			subtitle: moduleData?.Data?.subtitle ?? null,
+			description: moduleData?.Data?.description ?? null,
+			},
+		};
+
+		let html = "";
+
+		if (postOBJ.data.image != null) {
+			const fetchImage = await utils.fetch.server.get.image(token, postOBJ.data.image.Hash);
+			html = templates.vipel.index.post(postOBJ.pageId, postOBJ.data.title, fetchImage, postOBJ.data.title);
+		} else {
+			html = templates.vipel.index.postDefaultImg(postOBJ.pageId, postOBJ.data.title);
+		}
+
+		contentPost.insertAdjacentHTML("beforeend", html);
+		}
 
 		return utils.struct.Result.OK;
 	}
@@ -253,8 +440,11 @@ utils.router.vipel.admin = async (token) => {
 	if (token && window.location.pathname.startsWith("/vipel/admin")) {
 		htmlElements.body.innerHTML += templates.vipel.admin();
 		
-		let form = htmlElements.vipel.admin.form.table.body();
+		let table = htmlElements.vipel.admin.form.table.body();
+		let form = htmlElements.vipel.admin.form.table.form();
 
+		// table.addEventListener("change", handlers.adminUserPanel);
+		form.addEventListener("change", handlers.adminUserPanel);
 		let html = "";
 		const json = await utils.fetch.server.get.token(utils.config.endPoint.access.adminGetUser, token);
 		// localStorage.setItem("admin_user_get", json);
@@ -275,7 +465,7 @@ utils.router.vipel.admin = async (token) => {
 			);
 		}
 
-		form.innerHTML += html;
+		table.innerHTML += html;
 
 		return utils.struct.Result.OK;
 	}
@@ -289,13 +479,16 @@ utils.router.vipel.add = async (token) => {
 		// console.log(templates.init.vipel.post());
 		// console.log(templates.vipel.add.edit());
 		htmlElements.body.innerHTML += templates.vipel.add.edit.gui();
-		htmlElements.body.innerHTML += templates.vipel.add.edit();
+		htmlElements.body.innerHTML += templates.vipel.add.edit(crypto.randomUUID());
+
+		// console.log(htmlElements.vipel.add.form());
+		htmlElements.vipel.add.form().addEventListener("submit", handlers.onFormSubmitAdd);
 
 		
 		let moduleContainer = document.querySelector('[data-module="Module-Container"]');
-		moduleContainer.innerHTML += templates.vipel.add.edit.mod.main();
-
-		const textarea = document.querySelector("#Description");
+		moduleContainer.innerHTML += templates.vipel.add.edit.mod.main(crypto.randomUUID());
+		
+		const textarea = document.querySelector('[name="description"]');
 
 		textarea.addEventListener("input", () => {
 			textarea.style.height = "auto";
@@ -319,8 +512,6 @@ utils.router.vipel.add = async (token) => {
 			preview.src = URL.createObjectURL(file);
 			preview.style.display = "block";
 		});
-
-		
 
 		return utils.struct.Result.OK;
 	}
@@ -356,8 +547,50 @@ utils.router.vipel.post = async (token) => {
 			// 		img_avatar.Data.Image,
 			// 	);
 			// }
+			htmlElements.body.innerHTML += templates.initVipelPost(id);
 
-			const json = await utils.fetch.server.post(token, id);
+			const url = utils.config.endPoint.access.userGetPost;
+			const contentPost = document.querySelector('[data-module="Module-Container"]');
+
+			const json = await utils.fetch.server.get.post.id(url, token, id);
+			
+			console.log(json);
+			console.log(contentPost);
+			json.Data.forEach(post => {
+				let html = "";
+				const jsonPostParser = JSON.parse(post.ModuleJson); 
+
+				console.log(jsonPostParser);
+				switch(post.ModuleTypeID) {
+					case 1: {
+						contentPost.insertAdjacentHTML(
+							"beforeend",
+							templates.vipel.add.edit.mod.post.main()
+						);
+
+						const mod = contentPost.lastElementChild;
+						
+						const title = mod.querySelector('input[name="title"]');
+						title.value = jsonPostParser.Data.title;
+						const subtitle = mod.querySelector('input[name="subtitle"]');
+						subtitle.value = jsonPostParser.Data.subtitle;
+						const description = mod.querySelector('textarea[name="description"]');
+						description.value = jsonPostParser.Data.description;
+						break;
+					}
+					case 2: {
+						break;
+					}
+					case 3: {
+						break;
+					}
+					default: {
+						break;
+					}
+				};
+				
+				
+			});
 
 			console.log(json);
 		}
@@ -370,8 +603,8 @@ utils.router.vipel.post = async (token) => {
 utils.router.vipel.init = async (token) => {
 	if (await utils.router.vipel.index(token) == utils.struct.Result.OK) { return utils.struct.Result.OK; }
 	if (await utils.router.vipel.admin(token) == utils.struct.Result.OK) { return utils.struct.Result.OK; }
-	// if (await utils.router.vipel.post(token) == utils.struct.Result.OK) { return utils.struct.Result.OK; }
 	if (await utils.router.vipel.add(token) == utils.struct.Result.OK) { return utils.struct.Result.OK; }
+	if (await utils.router.vipel.post(token) == utils.struct.Result.OK) { return utils.struct.Result.OK; }
 
 	return false;
 };
@@ -392,6 +625,19 @@ utils.image.base64 = (ContentType, Image_base64) => {
 utils.token = {};
 
 utils.token.jwt = {};
+utils.token.jwt.checkExpired = (token) =>{
+  if (!token) return true;
+
+  const parts = token.split(".");
+  if (parts.length !== 3) return true;
+
+  const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+  if (!payload.exp) return false;
+
+  const now = Math.floor(Date.now() / 1000);
+  return payload.exp <= now;
+}
+
 
 utils.token.jwt.checkToken = async (token) => {
 	const response = await fetch(utils.config.endPoint.access.userCheck, {
@@ -416,19 +662,23 @@ utils.token.jwt.checkToken = async (token) => {
 };
 
 utils.token.jwt.checkRole = async (token) => {
-	const response = await fetch(utils.config.endPoint.access.userStatus, {
-		headers: {
-			Authorization: "Bearer " + token,
-		},
-	});
+	try {
+		const response = await fetch(utils.config.endPoint.access.userStatus, {
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		});
 
-	if (!response.ok) {
-		throw new Error("Error: " + response.status);
+		if (!response.ok) {
+			throw new Error("Error: " + response.status);
+		}
+
+		const data = await response.json();
+
+		return data.Data;
+	} catch (err) {
+		console.error("Fetch error:", err);
 	}
-
-	const data = await response.json();
-
-	return data.Data;
 };
 
 
@@ -478,3 +728,8 @@ utils.token.jwt.checkRole = async (token) => {
 //    event.preventDefault();
 //    windows.history.pushState({}, "", event.target.href)
 //};
+
+
+// utils.module.read.val = (name) => {
+//   module.querySelector(`[name="${name}"]`)?.value?.trim() ?? null;
+// };

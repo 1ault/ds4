@@ -415,10 +415,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccessController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\VipelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\WS\Load.cs" />
     <Compile Include="Models\WS\Reply.cs" />
     <Compile Include="Models\WS\ServerConfig.cs" />
     <Compile Include="Models\WS\Token.cs" />

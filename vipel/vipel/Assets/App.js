@@ -13,11 +13,17 @@ import { utils } from "./js/utils.js";
  */
 async function App(event) {
 	const token = localStorage.getItem("jwt");
+		
+	if (token != null && utils.token.jwt.checkExpired(token)) {
+		localStorage.removeItem("jwt");
+		location.href = "/login";
+	}
+
 	if (utils.router.vipel.logIn(token) == utils.struct.Result.OK) return;
 	if (utils.router.vipel.singUp(token) == utils.struct.Result.OK) return;
 	if (await utils.router.vipel.init(token) == utils.struct.Result.OK) return;
 	
-	utils.router.vipel.unknown();
+	utils.router.vipel.unknown(token);
 	return;
 }
 
