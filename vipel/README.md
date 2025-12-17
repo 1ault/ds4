@@ -1,10 +1,19 @@
+# Vipel
 
-https://stackoverflow.com/questions/4001081/asp-net-mvc-catch-all-route-and-default-route
+![1](./assets/1.png)
+![2](./assets/2.png)
+![3](./assets/3.png)
+![4](./assets/4.png)
 
+## Init && Config
 
+- SQL
+    - Inicie la base de datos
+- .env
+    - Configure el .env
 
-Web-config
+## Todo
 
-add the database an use them in the sql command.
+### Bugs
 
-put the sql to static and use state by state not more a class
+- Al expirar el token hay que eliminar los datos del navegador.

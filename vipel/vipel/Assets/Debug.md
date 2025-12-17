@@ -1,6 +1,4 @@
 /* 
-
-	 
     SVG placeholder
     background-image: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>\
@@ -9,3 +7,5 @@
 </svg>");
 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADElEQVR42mP8/5+hHgAHggJ/PmM6/gAAAABJRU5ErkJggg=="
  */
+
+ utils.token.jwt.checkTokenExp

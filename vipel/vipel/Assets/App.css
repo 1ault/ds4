@@ -599,6 +599,10 @@ textarea {
 
     line-height: 1.4;
     resize: vertical; 
+	
+	text-align: left;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
 }
 
 /* #scrollSpacer {
@@ -706,4 +710,3 @@ form input[type="search"] {
 	width: auto;
 	object-fit: contain;
 }
-

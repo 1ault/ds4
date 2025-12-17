@@ -420,7 +420,7 @@ utils.router.vipel.index = async (token) => {
 		};
 
 		let html = "";
-
+		
 		if (postOBJ.data.image != null) {
 			const fetchImage = await utils.fetch.server.get.image(token, postOBJ.data.image.Hash);
 			html = templates.vipel.index.post(postOBJ.pageId, postOBJ.data.title, fetchImage, postOBJ.data.title);
@@ -556,11 +556,12 @@ utils.router.vipel.post = async (token) => {
 			
 			console.log(json);
 			console.log(contentPost);
-			json.Data.forEach(post => {
+
+			for (const post of json.Data) {
 				let html = "";
 				const jsonPostParser = JSON.parse(post.ModuleJson); 
 
-				console.log(jsonPostParser);
+
 				switch(post.ModuleTypeID) {
 					case 1: {
 						contentPost.insertAdjacentHTML(
@@ -569,16 +570,51 @@ utils.router.vipel.post = async (token) => {
 						);
 
 						const mod = contentPost.lastElementChild;
-						
+
+						const image =  mod.querySelector('img[data-role="image-preview"]');
+
+						if (jsonPostParser?.Data?.image?.Hash ?? null != null) {
+							const fetchImage = await utils.fetch.server.get.image(token, jsonPostParser?.Data?.image?.Hash ?? null);
+							image.src = fetchImage;
+						}
+
 						const title = mod.querySelector('input[name="title"]');
 						title.value = jsonPostParser.Data.title;
+
 						const subtitle = mod.querySelector('input[name="subtitle"]');
 						subtitle.value = jsonPostParser.Data.subtitle;
+
 						const description = mod.querySelector('textarea[name="description"]');
+						description.addEventListener("input", () => {
+							description.style.height = "auto";
+							description.style.height = description.scrollHeight + "px";
+						});
 						description.value = jsonPostParser.Data.description;
+						description.style.height = "auto";
+						description.style.height = description.scrollHeight + "px";
+
 						break;
 					}
 					case 2: {
+						contentPost.insertAdjacentHTML(
+							"beforeend",
+							templates.vipel.add.edit.mod.section()
+						);
+
+						
+						const mod = contentPost.lastElementChild;
+
+						const title = mod.querySelector('input[name="title"]');
+						title.value = jsonPostParser.Data.title;
+
+						const description = mod.querySelector('textarea[name="description"]');
+						description.addEventListener("input", () => {
+							description.style.height = "auto";
+							description.style.height = description.scrollHeight + "px";
+						});
+						description.value = jsonPostParser.Data.description;
+						description.style.height = "auto";
+						description.style.height = description.scrollHeight + "px";
 						break;
 					}
 					case 3: {
@@ -589,8 +625,11 @@ utils.router.vipel.post = async (token) => {
 					}
 				};
 				
+			}
+			// json.Data.forEach( async (post) => {
 				
-			});
+				
+			// });
 
 			console.log(json);
 		}
@@ -625,18 +664,28 @@ utils.image.base64 = (ContentType, Image_base64) => {
 utils.token = {};
 
 utils.token.jwt = {};
-utils.token.jwt.checkExpired = (token) =>{
-  if (!token) return true;
 
-  const parts = token.split(".");
-  if (parts.length !== 3) return true;
+utils.token.jwt.checkTokenExp = async (token) => {
+	const response = await fetch(utils.config.endPoint.access.userCheck, {
+		headers: {
+			Authorization: "Bearer " + token,
+		},
+	});
 
-  const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
-  if (!payload.exp) return false;
+	if (response.status === 401) {
+		localStorage.removeItem("jwt");
+		window.location.href = "/login";
+		return;
+	}
 
-  const now = Math.floor(Date.now() / 1000);
-  return payload.exp <= now;
-}
+	if (!response.ok) {
+		throw new Error("Error: " + response.status);
+	}
+
+	const data = await response.json();
+
+	return data.Data;
+};
 
 
 utils.token.jwt.checkToken = async (token) => {
@@ -678,6 +727,8 @@ utils.token.jwt.checkRole = async (token) => {
 		return data.Data;
 	} catch (err) {
 		console.error("Fetch error:", err);
+		localStorage.removeItem("jwt");
+		location.href = "/login";
 	}
 };
 

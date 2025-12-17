@@ -132,7 +132,7 @@ handlers.adminPanel.onClick = (event) => {
 
 	let moduleContainer = document.querySelector('[data-module="Module-Container"]');
 
-	console.log("test");
+
 	let html = "";
 	switch (moduleTypeId) {
 		case 0:
@@ -140,8 +140,19 @@ handlers.adminPanel.onClick = (event) => {
 			html += templates.vipel.add.edit.mod.main(crypto.randomUUID());
 			moduleContainer.insertAdjacentHTML("beforeend", html);
 		case 1:
-			html = templates.vipel.add.edit.mod.section(crypto.randomUUID());
+			const randomUUID = crypto.randomUUID()
+			html = templates.vipel.add.edit.mod.section(randomUUID);
 			moduleContainer.insertAdjacentHTML("beforeend", html);
+
+			const div = document.querySelector(`div[data-module-id="${randomUUID}"]`);
+			const textarea = div.querySelector('[name="description"]');
+
+			textarea.addEventListener("input", () => {
+				textarea.style.height = "auto";
+				textarea.style.height = textarea.scrollHeight + "px";
+			});
+
+
 			break;
 		case 2:
 			html += templates.vipel.add.edit.mod.img(crypto.randomUUID());
